@@ -1,5 +1,7 @@
 package com.teamwe.personalizedreader.mynews;
 
+import com.teamwe.personalizedreader.model.Cluster;
+
 import java.util.List;
 
 /**

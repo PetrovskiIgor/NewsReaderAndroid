@@ -1,12 +1,12 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.model;
 
 /**
  * Created by Petre on 2/1/2016.
  */
 public class NewsPost {
-    String url;
-    String host_page;
-    String title;
+    public String url;
+    public String host_page;
+    public String title;
 
 
     public String getUrl() {return url;}

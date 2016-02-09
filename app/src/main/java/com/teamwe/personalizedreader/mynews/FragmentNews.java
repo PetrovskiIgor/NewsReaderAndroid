@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.teamwe.personalizedreader.adapters.ClusterAdapter;
+import com.teamwe.personalizedreader.model.Category;
+import com.teamwe.personalizedreader.model.Cluster;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,6 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.model;
+
+import com.teamwe.personalizedreader.model.Cluster;
 
 import java.util.List;
 

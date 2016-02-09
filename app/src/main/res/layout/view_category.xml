@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/txtCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_item_medium"
+        android:layout_marginTop="@dimen/margin_item_large"
+        android:layout_marginBottom="@dimen/margin_item_large"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:text="SOME CATEGORY"
+        android:textAppearance="?android:textAppearanceLarge"/>
+
+
+    <CheckBox
+        android:id="@+id/cbCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_item_medium"
+        android:layout_marginTop="@dimen/margin_item_large"
+        android:layout_marginBottom="@dimen/margin_item_large"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

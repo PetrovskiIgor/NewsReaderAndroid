@@ -1,4 +1,4 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.navigation;
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *
@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.teamwe.personalizedreader.mynews.R;
 
 
 public class WordsSlidingTabLayout extends HorizontalScrollView {

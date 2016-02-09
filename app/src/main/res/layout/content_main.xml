@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.teamwe.personalizedreader.mynews.MainActivity"
+    tools:context="com.teamwe.personalizedreader.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <com.teamwe.personalizedreader.mynews.WordsSlidingTabLayout
+    <com.teamwe.personalizedreader.navigation.WordsSlidingTabLayout
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

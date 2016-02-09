@@ -1,4 +1,4 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.navigation;
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *
@@ -23,6 +23,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.teamwe.personalizedreader.mynews.R;
 
 class WordsSlidingTabStrip extends LinearLayout {
 

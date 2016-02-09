@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.teamwe.personalizedreader.model.Category;
+import com.teamwe.personalizedreader.model.Cluster;
+import com.teamwe.personalizedreader.model.ClusterWrapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;

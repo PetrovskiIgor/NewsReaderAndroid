@@ -6,4 +6,6 @@
     <dimen name="leftMargin">5dp</dimen>
     <dimen name="rightMargin">5dp</dimen>
     <dimen name="bottomMargin">7dp</dimen>
+    <dimen name="margin_item_medium"> 10dp </dimen>
+    <dimen name="margin_item_large"> 20dp </dimen>
 </resources>

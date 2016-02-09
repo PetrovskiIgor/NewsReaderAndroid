@@ -1,4 +1,4 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.model;
 
 /**
  * Created by Petre on 2/3/2016.
@@ -6,10 +6,12 @@ package com.teamwe.personalizedreader.mynews;
 public class Category {
     private String name;
     private String title;
+    private boolean checkedState;
 
     public Category(String name, String title) {
         this.name = name;
         this.title = title;
+        this.checkedState = true;
     }
 
     public Category() {
@@ -29,5 +31,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean getCheckedState() {
+        return checkedState;
+    }
+
+    public void setCheckedState(boolean checkedState) {
+        this.checkedState = checkedState;
     }
 }

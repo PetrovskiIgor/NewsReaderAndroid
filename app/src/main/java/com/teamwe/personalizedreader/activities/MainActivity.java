@@ -1,10 +1,16 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.teamwe.personalizedreader.model.Category;
+import com.teamwe.personalizedreader.mynews.FragmentNews;
+import com.teamwe.personalizedreader.mynews.R;
+import com.teamwe.personalizedreader.navigation.ViewPagerAdapter;
+import com.teamwe.personalizedreader.navigation.WordsSlidingTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentNews fragmentHealthy;
     FragmentNews fragmentTech;
 
-    Category [] categories;
+    Category[] categories;
 
 
     Category categoryMacedonia;

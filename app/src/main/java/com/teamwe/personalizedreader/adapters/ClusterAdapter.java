@@ -1,4 +1,4 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.adapters;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.teamwe.personalizedreader.model.Cluster;
+import com.teamwe.personalizedreader.model.NewsPost;
+import com.teamwe.personalizedreader.mynews.R;
 
 import java.util.HashMap;
 import java.util.List;

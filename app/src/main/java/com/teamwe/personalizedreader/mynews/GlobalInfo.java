@@ -1,5 +1,7 @@
 package com.teamwe.personalizedreader.mynews;
 
+import com.teamwe.personalizedreader.model.Category;
+
 import java.util.ArrayList;
 import java.util.List;
 

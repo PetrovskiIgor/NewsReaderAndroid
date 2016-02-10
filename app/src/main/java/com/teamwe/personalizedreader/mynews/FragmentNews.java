@@ -13,6 +13,8 @@ import android.widget.ListView;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
+import com.teamwe.personalizedreader.tasks.GetNewsTask;
+import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
 import java.util.ArrayList;
 import java.util.List;

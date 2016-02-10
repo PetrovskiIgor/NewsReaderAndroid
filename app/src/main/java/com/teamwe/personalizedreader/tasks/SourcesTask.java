@@ -1,43 +1,43 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.teamwe.personalizedreader.model.Category;
-import com.teamwe.personalizedreader.model.Cluster;
-import com.teamwe.personalizedreader.model.ClusterWrapper;
+import com.google.gson.reflect.TypeToken;
+import com.teamwe.personalizedreader.model.Source;
+import com.teamwe.personalizedreader.mynews.GlobalInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-/**
- * Created by Petre on 1/5/2016.
- */
-public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
-    private static final String TAG = "GetNews";
-    OnNewsHere listener;
+// getting the sources from the server
+public class SourcesTask extends AsyncTask<Void, Void, List<Source>> {
+
+    private static final String TAG = "SourcesTask";
+    private OnSourcesHere listener;
 
 
-    public GetNewsTask(OnNewsHere listener) {
+    public SourcesTask(OnSourcesHere listener) {
         this.listener = listener;
     }
+
     @Override
-    public List<Cluster> doInBackground(Category ... params) {
+    public List<Source> doInBackground(Void ... params) {
 
 
-        List<Cluster> clusters = null;
-        Category category= params[0];
+        List<Source> sources = null;
         try {
-            String query = String.format("http://%s/get_my_clusters?category=%s", GlobalInfo.SERVER_IP,category.getName());
+            String query = String.format("http://%s/get_sources", GlobalInfo.SERVER_IP);
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
@@ -59,13 +59,15 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
             GsonBuilder builder = new GsonBuilder();
 
             Gson gson = builder.disableHtmlEscaping().create();
-            //Type typeToken = new TypeToken<List<Cluster>>() {}.getType();
+
             Log.i(TAG, "doInBackround: stream: " + sb.toString());
 
-            ClusterWrapper wrapper  = gson.fromJson(sb.toString(),ClusterWrapper.class);
-            clusters = wrapper.listClusters;
+            Type typeToken = new TypeToken<List<Source>>() {}.getType();
 
-            Log.i(TAG, " Uspeshna konverzija. clusters.size() = " + clusters.size());
+            sources = gson.fromJson(sb.toString(), typeToken);
+
+
+            Log.i(TAG, " Uspeshna konverzija. clusters.size() = " + sources.size());
 
         }catch(UnsupportedEncodingException e) {
             Log.i(TAG, " doInBackground: UnsupportedEncodingException: " + e.getMessage());
@@ -85,13 +87,15 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
         }
 
 
-        return clusters;
+        return sources;
     }
 
     @Override
-    public void onPostExecute(List<Cluster> locations) {
-        if (locations!=null) {
-            listener.onTaskCompleted(locations);
+    public void onPostExecute(List<Source> sources) {
+        if (sources !=null) {
+            listener.onTaskCompleted(sources);
+        } else {
+            Log.i(TAG, "onPostExecute: sources are null SOMETHING IS WRONG!!!!");
         }
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public class GlobalInfo {
 
 
-    public static String SERVER_IP = "192.168.0.103:8083";
+    public static String SERVER_IP = "192.168.0.104:8083";
     public static List<Category> CATEGORIES = new ArrayList<Category>() {{
         add(new Category("MAKEDONIJA","Македонија"));
         add(new Category("EKONOMIJA", "Економија"));

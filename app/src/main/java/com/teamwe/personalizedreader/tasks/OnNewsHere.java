@@ -1,4 +1,4 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader.tasks;
 
 import com.teamwe.personalizedreader.model.Cluster;
 

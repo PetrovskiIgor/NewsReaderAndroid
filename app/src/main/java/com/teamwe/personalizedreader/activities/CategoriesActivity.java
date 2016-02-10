@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
+import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.mynews.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 
@@ -42,13 +43,10 @@ public class CategoriesActivity extends AppCompatActivity {
                 moveToNextActivity();
             }
         });
-
-
-
     }
 
     public void moveToNextActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SourcesActivity.class);
         startActivity(intent);
         this.finish();
     }

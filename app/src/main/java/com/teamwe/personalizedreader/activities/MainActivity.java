@@ -1,10 +1,14 @@
 package com.teamwe.personalizedreader.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Toast;
 
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.mynews.FragmentNews;
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int PAGE_FOOTBALL = 3;
     private static final int PAGE_HEALTHY = 4;
     private static final int PAGE_TECH = 5;
+
+    private static final int SETTINGS_REQUEST_CODE = 7;
 
 
     ViewPagerAdapter viewPagerAdapter;
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     Category categoryHealthy;
     Category categoryTech;
 
+    FloatingActionButton btnSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        btnSettings = (FloatingActionButton)findViewById(R.id.btnSettings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                adjustPersonalizationSettings();
+            }
+        });
 
         categoryMacedonia = new Category("MAKEDONIJA","Македонија");
         categoryEconomy = new Category("EKONOMIJA", "Економија");
@@ -134,5 +150,23 @@ public class MainActivity extends AppCompatActivity {
         slidingTabLayout.setViewPager(mViewPager);
 
         mViewPager.setCurrentItem(0, true);
+    }
+
+
+    private void adjustPersonalizationSettings() {
+
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        intent.putExtra("callFromMainActivity", true);
+        startActivityForResult(intent, SETTINGS_REQUEST_CODE);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == SETTINGS_REQUEST_CODE) {
+            Toast.makeText(this, "Settings adjusted!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

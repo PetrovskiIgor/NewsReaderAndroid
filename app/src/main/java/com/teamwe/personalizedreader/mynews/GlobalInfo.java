@@ -22,4 +22,6 @@ public class GlobalInfo {
 
     }};
 
+    public static String PERSONALIZATION_STR = "isPersonalized";
+
 }

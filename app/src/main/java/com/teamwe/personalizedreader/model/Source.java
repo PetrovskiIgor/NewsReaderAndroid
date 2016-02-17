@@ -1,8 +1,6 @@
 package com.teamwe.personalizedreader.model;
 
-/**
- * Created by igorpetrovski on 2/10/16.
- */
+
 public class Source {
 
     private int id;

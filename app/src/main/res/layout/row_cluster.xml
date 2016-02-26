@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/leftMargin"
-    android:layout_marginRight="@dimen/rightMargin"
-    android:layout_marginBottom="@dimen/bottomMargin">
+    >
+
+    <ImageView
+        android:id="@+id/imgCluster"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="#ffffff"/>
 
     <TextView
+        android:text="Пробиени шифрите за наса"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewTitle"
         android:textAppearance="@android:style/TextAppearance.Medium"
+        android:layout_toRightOf="@+id/imgCluster"
+        android:layout_marginLeft="5dp"
         />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:id="@+id/textViewNumPosts"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="9 извори"
+        android:textAppearance="@android:style/TextAppearance.Small"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewNumPosts"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:text="9 извори"
-            android:textAppearance="@android:style/TextAppearance.Small"/>
 
-    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

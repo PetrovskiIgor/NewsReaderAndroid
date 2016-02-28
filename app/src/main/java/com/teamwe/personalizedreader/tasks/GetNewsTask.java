@@ -38,7 +38,7 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
         List<Cluster> clusters = null;
         Category category= params[0];
         try {
-            String query = String.format("http://%s/get_my_clusters?category=%s", GlobalInfo.SERVER_IP,category.getName());
+            String query = String.format("http://%s/get_filtered_clusters?category=%s", GlobalInfo.SERVER_IP,category.getName());
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 

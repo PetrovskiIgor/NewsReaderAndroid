@@ -11,7 +11,7 @@ import java.util.List;
 public class GlobalInfo {
 
 
-    public static String SERVER_IP = "192.168.43.109:8080";
+    public static String SERVER_IP = "192.168.43.106:8083";
     public static List<Category> CATEGORIES = new ArrayList<Category>() {{
         add(new Category("MAKEDONIJA","Македонија"));
         add(new Category("EKONOMIJA", "Економија"));
@@ -26,4 +26,6 @@ public class GlobalInfo {
     public static final String APP_HAS_BEEN_OPEN = "notFirstTime";
 
     public static String CAT_SPECIFICATION_PREF="categoriesSpecification";
+    public static final String SOURCES_SPECIFICATION_PREF = "sourcesSpecification";
+    public static final String WANTED_SOURCES = "wantedSources";
 }

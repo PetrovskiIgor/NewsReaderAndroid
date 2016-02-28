@@ -23,6 +23,9 @@ public class Source {
         this.isChecked = true;
     }
 
+    public int getId() {
+        return id;
+    }
 
     public String getUrl() {
         return url;

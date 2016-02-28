@@ -8,8 +8,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
 import com.teamwe.personalizedreader.mynews.R;
@@ -62,6 +64,7 @@ public class ClusterAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.textViewTitle = (TextView) convertView.findViewById(R.id.textViewTitle);
             holder.textViewNumPosts = (TextView) convertView.findViewById(R.id.textViewNumPosts);
+            holder.imgViewPhoto = (ImageView) convertView.findViewById(R.id.imgCluster);
 
             convertView.setTag(holder);
         }
@@ -77,6 +80,8 @@ public class ClusterAdapter extends BaseAdapter {
         if (cluster!=null){
             holder.position=position;
             String title = cluster.listNews.get(0).title;
+            String imgUrl = cluster.listNews.get(0).img_url;
+
             holder.textViewTitle.setText(title);
             if (cluster.listNews.size()>1){
                 holder.textViewNumPosts.setText(cluster.listNews.size()+" извори");
@@ -84,6 +89,8 @@ public class ClusterAdapter extends BaseAdapter {
             else{
                 holder.textViewNumPosts.setText("");
             }
+
+            Picasso.with(activity).load(imgUrl).into(holder.imgViewPhoto);
         }
 
         return convertView;
@@ -100,7 +107,7 @@ public class ClusterAdapter extends BaseAdapter {
         final String [] arr = new String[cluster.listNews.size()];
         final HashMap<String, NewsPost> hostPageVsPost = new HashMap<String, NewsPost> ();
         for (int i=0;i<arr.length;i++){
-            arr[i]=cluster.listNews.get(i).getHostPage();
+            arr[i]=cluster.listNews.get(i).getSource_url();
             hostPageVsPost.put(arr[i],cluster.listNews.get(i));
         }
         builder.setTitle(R.string.pick_news).setItems(arr, new DialogInterface.OnClickListener() {
@@ -127,6 +134,7 @@ public class ClusterAdapter extends BaseAdapter {
     class ViewHolder{
         TextView textViewTitle;
         TextView textViewNumPosts;
+        ImageView imgViewPhoto;
         int position;
     }
 }

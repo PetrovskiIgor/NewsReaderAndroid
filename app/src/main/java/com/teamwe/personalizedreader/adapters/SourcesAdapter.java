@@ -66,17 +66,8 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
     }
 
 
-    public List<Source> getCheckedSources() {
-
-        List<Source> checkedSources = new ArrayList<Source>();
-
-        for(Source s : data) {
-            if(s.isChecked()) {
-                checkedSources.add(s);
-            }
-        }
-
-        return checkedSources;
+    public List<Source> getSources() {
+        return data;
     }
 
 }

@@ -10,4 +10,11 @@ public class Cluster {
     public List<NewsPost> listNews;
     public String category;
 
+    public Cluster(){
+
+    }
+
+    public Cluster(List<NewsPost> listNews) {
+        this.listNews = listNews;
+    }
 }

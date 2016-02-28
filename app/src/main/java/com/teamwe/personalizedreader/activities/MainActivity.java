@@ -1,6 +1,8 @@
 package com.teamwe.personalizedreader.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.mynews.FragmentNews;
+import com.teamwe.personalizedreader.mynews.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.navigation.ViewPagerAdapter;
 import com.teamwe.personalizedreader.navigation.WordsSlidingTabLayout;
@@ -46,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentNews fragmentHealthy;
     FragmentNews fragmentTech;
 
-    Category[] categories;
-
+    List<Category> categories;
 
     Category categoryMacedonia;
     Category categoryWorld;
@@ -74,15 +76,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        categoryMacedonia = new Category("MAKEDONIJA","Македонија");
-        categoryEconomy = new Category("EKONOMIJA", "Економија");
-        categoryWorld = new Category("SVET", "Свет");
-        categoryFootball = new Category("FUDBAL", "Фудбал");
-        categoryHealthy = new Category("ZDRAVJE", "Здравје");
-        categoryTech = new Category("TEHNOLOGIJA","Технологија");
+        categoryMacedonia = GlobalInfo.CATEGORIES.get(0);
+        categoryEconomy = GlobalInfo.CATEGORIES.get(1);
+        categoryWorld = GlobalInfo.CATEGORIES.get(2);
+        categoryFootball = GlobalInfo.CATEGORIES.get(3);
+        categoryHealthy = GlobalInfo.CATEGORIES.get(4);
+        categoryTech = GlobalInfo.CATEGORIES.get(5);
 
-        this.categories = new Category[]{categoryMacedonia, categoryEconomy, categoryWorld, categoryFootball,
-                categoryHealthy, categoryTech};
+        this.categories = GlobalInfo.CATEGORIES;
 
         // getting the pager
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -92,54 +93,76 @@ public class MainActivity extends AppCompatActivity {
         titles = new ArrayList<String> ();
 
         // read the user specifications for categories from shared preferences
+        SharedPreferences pref = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
-        fragmentMacedonia = (FragmentNews)getSupportFragmentManager()
-                .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_MACEDONIA));
-        if (fragmentMacedonia == null)
-            fragmentMacedonia = new FragmentNews();
-        fragmentMacedonia.setCategory(categoryMacedonia);
+        if (pref.getBoolean(categoryMacedonia.getName(),false)) {
+            fragmentMacedonia = (FragmentNews) getSupportFragmentManager()
+                    .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_MACEDONIA));
+            if (fragmentMacedonia == null)
+                fragmentMacedonia = new FragmentNews();
+            fragmentMacedonia.setCategory(categoryMacedonia);
 
-        fragmentWorld = (FragmentNews)getSupportFragmentManager()
-                .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_WORLD));
-        if (fragmentWorld == null)
-            fragmentWorld = new FragmentNews();
-        fragmentWorld.setCategory(categoryWorld);
-
-        fragmentEconomy = (FragmentNews)getSupportFragmentManager()
-                .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_ECONOMY));
-        if (fragmentEconomy == null)
-            fragmentEconomy = new FragmentNews();
-        fragmentEconomy.setCategory(categoryEconomy);
-
-        fragmentFootball = (FragmentNews)getSupportFragmentManager()
-                .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_FOOTBALL));
-        if (fragmentFootball == null)
-            fragmentFootball = new FragmentNews();
-        fragmentFootball.setCategory(categoryFootball);
-
-        fragmentHealthy = (FragmentNews)getSupportFragmentManager()
-                .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_HEALTHY));
-        if(fragmentHealthy == null)
-            fragmentHealthy = new FragmentNews();
-        fragmentHealthy.setCategory(categoryHealthy);
-
-        fragmentTech = (FragmentNews)getSupportFragmentManager()
-                .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_TECH));
-        if (fragmentTech == null)
-            fragmentTech = new FragmentNews();
-        fragmentTech.setCategory(categoryTech);
-
-
-        fragments.add(fragmentMacedonia);
-        fragments.add(fragmentEconomy);
-        fragments.add(fragmentWorld);
-        fragments.add(fragmentFootball);
-        fragments.add(fragmentHealthy);
-        fragments.add(fragmentTech);
-
-        for (Category cat : categories){
-            titles.add(cat.getTitle());
+            fragments.add(fragmentMacedonia);
+            titles.add(categoryMacedonia.getTitle());
         }
+
+        if (pref.getBoolean(categoryWorld.getName(),false)) {
+            fragmentWorld = (FragmentNews) getSupportFragmentManager()
+                    .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_WORLD));
+            if (fragmentWorld == null)
+                fragmentWorld = new FragmentNews();
+            fragmentWorld.setCategory(categoryWorld);
+
+            fragments.add(fragmentWorld);
+            titles.add(categoryWorld.getTitle());
+        }
+
+        if (pref.getBoolean(categoryEconomy.getName(),false)) {
+            fragmentEconomy = (FragmentNews) getSupportFragmentManager()
+                    .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_ECONOMY));
+            if (fragmentEconomy == null)
+                fragmentEconomy = new FragmentNews();
+            fragmentEconomy.setCategory(categoryEconomy);
+
+            fragments.add(fragmentEconomy);
+            titles.add(categoryEconomy.getTitle());
+        }
+
+        if (pref.getBoolean(categoryFootball.getName(),false)) {
+            fragmentFootball = (FragmentNews) getSupportFragmentManager()
+                    .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_FOOTBALL));
+            if (fragmentFootball == null)
+                fragmentFootball = new FragmentNews();
+            fragmentFootball.setCategory(categoryFootball);
+
+            fragments.add(fragmentFootball);
+            titles.add(categoryFootball.getTitle());
+        }
+
+        if (pref.getBoolean(categoryHealthy.getName(),false)) {
+            fragmentHealthy = (FragmentNews) getSupportFragmentManager()
+                    .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_HEALTHY));
+            if (fragmentHealthy == null)
+                fragmentHealthy = new FragmentNews();
+            fragmentHealthy.setCategory(categoryHealthy);
+
+            fragments.add(fragmentHealthy);
+            titles.add(categoryHealthy.getTitle());
+        }
+
+        if (pref.getBoolean(categoryTech.getName(),false)) {
+            fragmentTech = (FragmentNews) getSupportFragmentManager()
+                    .findFragmentByTag(ViewPagerAdapter.getFragmentTag(PAGE_TECH));
+            if (fragmentTech == null)
+                fragmentTech = new FragmentNews();
+            fragmentTech.setCategory(categoryTech);
+
+            fragments.add(fragmentTech);
+            titles.add(categoryTech.getTitle());
+        }
+
+
+
 
         //setting the adapter for fragments
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),fragments,titles);
@@ -158,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CategoriesActivity.class);
         intent.putExtra("callFromMainActivity", true);
         startActivityForResult(intent, SETTINGS_REQUEST_CODE);
+
 
     }
 

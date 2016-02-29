@@ -66,8 +66,9 @@ public class SourcesActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(GlobalInfo.PERSONALIZATION_STR, true);
                 editor.commit();
-                putSourcesSpecificationToPref();
-                moveToNextActivity();
+                if (putSourcesSpecificationToPref()) {
+                    moveToNextActivity();
+                }
             }
         });
 
@@ -83,7 +84,7 @@ public class SourcesActivity extends AppCompatActivity {
 
     }
 
-    private void putSourcesSpecificationToPref() {
+    private boolean putSourcesSpecificationToPref() {
         if (adapterSources != null){
             List<Source> sources = adapterSources.getSources();
             SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
@@ -94,10 +95,15 @@ public class SourcesActivity extends AppCompatActivity {
                     wanted.add(s.getId()+"");
                 }
             }
-            
+            if (wanted.size()==0) {
+                editor.commit();
+                return false;
+            }
+
             editor.putStringSet(GlobalInfo.WANTED_SOURCES, wanted);
             editor.commit();
         }
+        return true;
     }
 
     private void loadSources(List<Source> data) {
@@ -105,8 +111,13 @@ public class SourcesActivity extends AppCompatActivity {
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
         Set<String> wantedSources = preferences.getStringSet(GlobalInfo.WANTED_SOURCES, new HashSet<String> ());
 
+
         for (Source s : data){
-            s.setIsChecked(wantedSources.contains(s.getId()+""));
+            if (!callFromMainActivity){
+                s.setIsChecked(true);
+            }else {
+                s.setIsChecked(wantedSources.contains(s.getId() + ""));
+            }
         }
 
         adapterSources = new SourcesAdapter(this, 0, data);

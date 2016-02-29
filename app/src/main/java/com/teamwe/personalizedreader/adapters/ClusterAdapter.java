@@ -18,6 +18,7 @@ import com.teamwe.personalizedreader.mynews.R;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Petre on 2/1/2016.
@@ -56,7 +57,7 @@ public class ClusterAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        ViewHolder holder;
+        final ViewHolder holder;
 
         if (convertView ==null){
 
@@ -90,10 +91,39 @@ public class ClusterAdapter extends BaseAdapter {
                 holder.textViewNumPosts.setText("");
             }
 
-            Picasso.with(activity).load(imgUrl).into(holder.imgViewPhoto);
+            if (imgUrl.length()!=0 && imgUrl.startsWith("http")) {
+                Picasso.with(activity).load(imgUrl).into(holder.imgViewPhoto,new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        putRandomPhotoTo(holder.imgViewPhoto);
+                    }
+                });
+            }
+            else{
+                putRandomPhotoTo(holder.imgViewPhoto);
+            }
         }
 
         return convertView;
+    }
+
+    private void putRandomPhotoTo(ImageView imgViewPhoto) {
+        Random r = new Random();
+        int k = r.nextInt(8)+1;
+        if (k==1) Picasso.with(activity).load(R.drawable.first).into(imgViewPhoto);
+        if (k==2) Picasso.with(activity).load(R.drawable.second).into(imgViewPhoto);
+        if (k==3) Picasso.with(activity).load(R.drawable.third).into(imgViewPhoto);
+        if (k==4) Picasso.with(activity).load(R.drawable.fourth).into(imgViewPhoto);
+        if (k==5) Picasso.with(activity).load(R.drawable.fifth).into(imgViewPhoto);
+        if (k==6) Picasso.with(activity).load(R.drawable.sixth).into(imgViewPhoto);
+        if (k==7) Picasso.with(activity).load(R.drawable.seventh).into(imgViewPhoto);
+        if (k==8) Picasso.with(activity).load(R.drawable.eight).into(imgViewPhoto);
+        
     }
 
     public void startDialog(Cluster cluster){

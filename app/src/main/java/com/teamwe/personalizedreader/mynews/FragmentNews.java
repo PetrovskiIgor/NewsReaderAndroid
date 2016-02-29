@@ -2,6 +2,7 @@ package com.teamwe.personalizedreader.mynews;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +19,9 @@ import com.teamwe.personalizedreader.tasks.GetNewsTask;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class FragmentNews extends Fragment {
@@ -91,6 +94,8 @@ public class FragmentNews extends Fragment {
 
         listViewNews.setAdapter(adapter);
 
+        Set<String> wanted = parent.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE)
+                .getStringSet(GlobalInfo.WANTED_SOURCES, new HashSet<String> ());
 
         new GetNewsTask(new OnNewsHere() {
             @Override
@@ -99,7 +104,7 @@ public class FragmentNews extends Fragment {
                 adapter = new ClusterAdapter(parent,clusters);
                 listViewNews.setAdapter(adapter);
             }
-        }).execute(category);
+        }, wanted).execute(category);
 
 
         this.listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {

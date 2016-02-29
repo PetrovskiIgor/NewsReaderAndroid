@@ -18,18 +18,22 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Petre on 1/5/2016.
  */
 public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
     private static final String TAG = "GetNews";
+    private final Set<String> wanted;
     OnNewsHere listener;
 
 
-    public GetNewsTask(OnNewsHere listener) {
+    public GetNewsTask(OnNewsHere listener, Set<String> wanted) {
         this.listener = listener;
+        this.wanted = wanted;
     }
     @Override
     public List<Cluster> doInBackground(Category ... params) {
@@ -38,7 +42,18 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
         List<Cluster> clusters = null;
         Category category= params[0];
         try {
-            String query = String.format("http://%s/get_filtered_clusters?category=%s", GlobalInfo.SERVER_IP,category.getName());
+            StringBuilder sb = new StringBuilder();
+            for (String s:wanted){
+                sb.append(s+",");
+            }
+
+            String wantedSources = "";
+            if (sb.toString().length()>0) {
+                wantedSources = sb.toString().substring(0, sb.length() - 1);
+            }
+
+            String query = String.format("http://%s/get_filtered_clusters?category=%s&wantedSources=%s", GlobalInfo.SERVER_IP,
+                    category.getName(), wantedSources);
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
@@ -52,7 +67,7 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
             String line;
 
-            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder();
             while(null != (line = br.readLine()))
                 sb.append(line);
 

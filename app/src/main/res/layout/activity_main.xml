@@ -18,21 +18,42 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primaryColor"
+            android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+            <!--
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"/>
+                -->
 
-                <ImageView
+
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="5dp"/>
-            </RelativeLayout>
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:text="Најнови"
+                    android:textColor="#263238"
+                    android:layout_centerVertical="true"
+                    />
+                <ImageView
+                    android:id="@+id/imgSettings"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/settings_"
+                    android:tint="#263238"
+                    android:layout_marginRight="10dp"/>
+        </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -53,6 +74,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:src="@mipmap/settings_"/>
+        android:src="@mipmap/settings_"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

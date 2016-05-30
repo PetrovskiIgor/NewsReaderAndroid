@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.teamwe.personalizedreader.model.Category;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     Category categoryHealthy;
     Category categoryTech;
 
-    FloatingActionButton btnSettings;
+    ImageView imgSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        btnSettings = (FloatingActionButton)findViewById(R.id.btnSettings);
-        btnSettings.setOnClickListener(new View.OnClickListener() {
+        imgSettings = (ImageView)findViewById(R.id.imgSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

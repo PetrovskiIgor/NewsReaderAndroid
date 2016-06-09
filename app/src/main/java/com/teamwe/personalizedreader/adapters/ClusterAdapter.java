@@ -12,17 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.teamwe.personalizedreader.activities.SimilarNewsActivity;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
+import com.teamwe.personalizedreader.mynews.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by Petre on 2/1/2016.
- */
+
 public class ClusterAdapter extends BaseAdapter {
 
     private static final String TAG = "ClusterAdapter";
@@ -33,6 +34,11 @@ public class ClusterAdapter extends BaseAdapter {
         super();
         this.activity = activity;
         this.clusters = clusters;
+    }
+
+
+    public Cluster getCluster(int position) {
+        return clusters.get(position);
     }
 
     @Override
@@ -65,6 +71,7 @@ public class ClusterAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.textViewTitle = (TextView) convertView.findViewById(R.id.textViewTitle);
             holder.textViewNumPosts = (TextView) convertView.findViewById(R.id.textViewNumPosts);
+            holder.txtSourceUrl = (TextView)convertView.findViewById(R.id.textViewSourceUrl);
             holder.imgViewPhoto = (ImageView) convertView.findViewById(R.id.imgCluster);
 
             convertView.setTag(holder);
@@ -82,16 +89,49 @@ public class ClusterAdapter extends BaseAdapter {
             holder.position=position;
             String title = cluster.listNews.get(0).title;
             String imgUrl = cluster.listNews.get(0).img_url;
+            String sourceUrl = cluster.listNews.get(0).source_url;
 
+
+            String bStr = "http://";
+            if(sourceUrl.startsWith(bStr)) {
+                sourceUrl = sourceUrl.substring(bStr.length());
+            }
+
+            bStr = "www.";
+            if(sourceUrl.startsWith(bStr)) {
+                sourceUrl = sourceUrl.substring(bStr.length());
+            }
+
+            if(sourceUrl.endsWith("/")) {
+                sourceUrl = sourceUrl.substring(0, sourceUrl.length()-1);
+            }
+            holder.txtSourceUrl.setText(sourceUrl);
             holder.textViewTitle.setText(title);
-            if (cluster.listNews.size()>1){
-                holder.textViewNumPosts.setText(cluster.listNews.size()+" извори");
+
+            int numTexts = cluster.listNews.size();
+            if (numTexts>1){
+                String finalText = String.format("%d %s", numTexts-1, ((numTexts-1) > 1 )? "СЛИЧНИ ВЕСТИ":"СЛИЧНА ВЕСТ");
+                holder.textViewNumPosts.setText(finalText);
+
+                holder.textViewNumPosts.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(activity, SimilarNewsActivity.class);
+                        /*
+                        da se pushti id-to na cluster-ot
+                         */
+                        ArrayList<NewsPost> similarNewsPosts = (ArrayList<NewsPost>)cluster.listNews;
+                        intent.putParcelableArrayListExtra(GlobalInfo.LIST_NEWS, similarNewsPosts);
+                        activity.startActivity(intent);
+                    }
+                });
             }
             else{
                 holder.textViewNumPosts.setText("");
             }
 
-            if (imgUrl.length()!=0 && imgUrl.startsWith("http")) {
+            if (null != imgUrl && imgUrl.length()!=0 && imgUrl.startsWith("http")) {
                 Picasso.with(activity).load(imgUrl).into(holder.imgViewPhoto,new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
@@ -164,6 +204,7 @@ public class ClusterAdapter extends BaseAdapter {
     class ViewHolder{
         TextView textViewTitle;
         TextView textViewNumPosts;
+        TextView txtSourceUrl;
         ImageView imgViewPhoto;
         int position;
     }

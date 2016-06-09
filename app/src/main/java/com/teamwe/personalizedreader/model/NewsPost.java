@@ -1,9 +1,10 @@
 package com.teamwe.personalizedreader.model;
 
-/**
- * Created by Petre on 2/1/2016.
- */
-public class NewsPost {
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NewsPost implements Parcelable {
     public String url;
     public String host_page;
     public String title;
@@ -30,7 +31,15 @@ public class NewsPost {
     public String getUrl() {return url;}
     public String getTitle() {return title;}
 
-    public NewsPost(){
+    public NewsPost(Parcel input){
+
+        url = input.readString();
+        host_page = input.readString();
+        title = input.readString();
+        source_id = input.readString();
+        source_url = input.readString();
+        img_url = input.readString();
+
 
     }
 
@@ -39,4 +48,33 @@ public class NewsPost {
         this.host_page = host_page;
         this.title = title;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(url);
+        dest.writeString(host_page);
+        dest.writeString(title);
+        dest.writeString(source_id);
+        dest.writeString(source_url);
+        dest.writeString(img_url);
+
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<NewsPost> CREATOR = new Parcelable.Creator<NewsPost>() {
+        @Override
+        public NewsPost createFromParcel(Parcel in) {
+            return new NewsPost(in);
+        }
+
+        @Override
+        public NewsPost[] newArray(int size) {
+            return new NewsPost[size];
+        }
+    };
 }

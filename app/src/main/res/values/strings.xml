@@ -7,4 +7,20 @@
     <string name="pick_news">Изберете извор</string>
     <string name="next">Следно</string>
     <string name="title_activity_splash">SplashActivity</string>
+
+    <string-array name="categories_array">
+        <item>Најнови</item>
+        <item>Македонија</item>
+        <item>Економија</item>
+        <item>Свет</item>
+        <item>Забава</item>
+        <item>Наука</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="title_activity_alternative_main">AlternativeMain</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_similar_news">Слични вести</string>
 </resources>

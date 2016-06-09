@@ -4,6 +4,7 @@ package com.teamwe.personalizedreader.model;
  * Created by Petre on 2/3/2016.
  */
 public class Category {
+
     private String name;
     private String title;
     private boolean checkedState;

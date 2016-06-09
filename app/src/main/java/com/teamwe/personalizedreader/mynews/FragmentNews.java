@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.model.Category;
@@ -121,6 +122,15 @@ public class FragmentNews extends Fragment {
     public void onAttach(Activity context) {
         super.onAttach(context);
         this.parent = context;
+
+
+        String text = "NULL";
+
+        if (null != category) {
+            text = category.getTitle();
+
+        }
+        Toast.makeText(this.parent, "IN FRAAGMENT " + text, Toast.LENGTH_LONG).show();
     }
 
     public void setCategory(Category category) {

@@ -13,27 +13,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.teamwe.personalizedreader.activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
             android:name="com.teamwe.personalizedreader.activities.CategoriesActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.teamwe.personalizedreader.activities.SourcesActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.teamwe.personalizedreader.activities.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.teamwe.personalizedreader.activities.AlternativeMain"
+            android:label="@string/title_activity_alternative_main"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.teamwe.personalizedreader.activities.NewsPostActivity" />
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+
+        <activity
+            android:name="com.teamwe.personalizedreader.activities.SimilarNewsActivity"
+            android:label="@string/title_activity_similar_news"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

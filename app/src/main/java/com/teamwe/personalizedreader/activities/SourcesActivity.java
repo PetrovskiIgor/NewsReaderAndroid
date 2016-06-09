@@ -126,7 +126,7 @@ public class SourcesActivity extends AppCompatActivity {
 
 
     public void moveToNextActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AlternativeMain.class);
         startActivity(intent);
         this.finish();
     }

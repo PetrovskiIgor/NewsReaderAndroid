@@ -15,7 +15,7 @@ public class GlobalInfo {
     public static String NEWS_TITLE = "newsTitle";
     public static String NEWS_URL = "newsUrl";
     public static String LIST_NEWS = "listNews";
-    public static String SERVER_IP = "192.168.0.101:8083";
+    public static String SERVER_IP = "192.168.1.110:8083";
     public static List<Category> CATEGORIES = new ArrayList<Category>() {{
         add(new Category("MAKEDONIJA","Македонија"));
         add(new Category("EKONOMIJA", "Економија"));

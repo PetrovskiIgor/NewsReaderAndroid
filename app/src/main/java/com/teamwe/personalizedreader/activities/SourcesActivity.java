@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -58,9 +59,9 @@ public class SourcesActivity extends AppCompatActivity {
 
 
 
-        TextView txtNext = (TextView)findViewById(R.id.txtNext);
+        RelativeLayout layoutNext = (RelativeLayout)findViewById(R.id.layoutNext);
 
-        txtNext.setOnClickListener(new View.OnClickListener() {
+        layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();

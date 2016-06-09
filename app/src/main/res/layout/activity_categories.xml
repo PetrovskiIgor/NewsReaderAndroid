@@ -16,25 +16,42 @@
             android:id="@+id/toolbarCategories"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primaryColor"
+            android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 >
-                <TextView
-                    android:id="@+id/txtNext"
+                <RelativeLayout
+                    android:id="@+id/layoutNext"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/margin_item_medium"
-                    android:textAppearance="?android:textAppearanceLarge"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:text="@string/next"
-                    android:textAllCaps="true"/>
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true">
+                    <TextView
+                        android:id="@+id/txtNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/white"
+                        android:text="Следно"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnNext"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/txtNext"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/arrow_right"
+                        android:layout_marginRight="15dp"
+                        android:tint="@color/sysWhite"
+                        />
+                </RelativeLayout>
+
 
             </RelativeLayout>
 

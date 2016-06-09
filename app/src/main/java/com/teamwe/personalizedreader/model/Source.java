@@ -31,6 +31,29 @@ public class Source {
         return url;
     }
 
+    public String getPrettyUrl() {
+        String prettyUrl = url;
+
+        String check = "http://";
+
+        if(prettyUrl.startsWith(check)) {
+            prettyUrl = prettyUrl.substring(check.length());
+        }
+
+        check = "www.";
+
+        if(prettyUrl.startsWith(check)) {
+            prettyUrl = prettyUrl.substring(check.length());
+        }
+
+        if(prettyUrl.endsWith("/")) {
+            prettyUrl = prettyUrl.substring(0, prettyUrl.length()-1);
+        }
+
+
+        return prettyUrl;
+    }
+
     public boolean isChecked() {
         return isChecked;
     }

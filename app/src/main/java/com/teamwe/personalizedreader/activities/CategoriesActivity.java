@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
 
     private ListView listViewCategories;
-    private TextView txtNext;
+    private RelativeLayout layoutNext;
     private CategoriesAdapter adapter;
     private boolean callFromMainActivity = false;
     @Override
@@ -63,8 +64,8 @@ public class CategoriesActivity extends AppCompatActivity {
         listViewCategories.setAdapter(adapter);
 
         final Activity act = this;
-        txtNext = (TextView)toolbar.findViewById(R.id.txtNext);
-        txtNext.setOnClickListener(new View.OnClickListener() {
+        layoutNext = (RelativeLayout)toolbar.findViewById(R.id.layoutNext);
+        layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (countCategoriesToRead() >= 1) {

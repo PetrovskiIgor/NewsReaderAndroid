@@ -45,7 +45,7 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
 
         Source currSource = data.get(position);
 
-        txtSource.setText(currSource.getUrl());
+        txtSource.setText(currSource.getPrettyUrl());
 
         if(currSource.isChecked()) {
             cbSource.setChecked(true);

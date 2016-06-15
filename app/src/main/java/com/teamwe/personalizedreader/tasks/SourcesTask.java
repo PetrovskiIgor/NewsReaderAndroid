@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.teamwe.personalizedreader.model.Source;
-import com.teamwe.personalizedreader.mynews.GlobalInfo;
+import com.teamwe.personalizedreader.GlobalInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;

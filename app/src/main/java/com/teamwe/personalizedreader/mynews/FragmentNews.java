@@ -12,10 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
-import com.teamwe.personalizedreader.model.NewsPost;
 import com.teamwe.personalizedreader.tasks.GetNewsTask;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 

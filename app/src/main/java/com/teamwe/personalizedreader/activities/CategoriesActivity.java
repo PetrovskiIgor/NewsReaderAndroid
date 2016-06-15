@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -21,25 +20,25 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
-import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.model.Category;
-import com.teamwe.personalizedreader.model.Cluster;
-import com.teamwe.personalizedreader.mynews.GlobalInfo;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.CategoriesTask;
-import com.teamwe.personalizedreader.tasks.GetNewsTask;
 import com.teamwe.personalizedreader.tasks.OnCategoriesHere;
-import com.teamwe.personalizedreader.tasks.OnNewsHere;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+
+// !!! WARNING !!!
+// NOT OVER:
+// We need to update GlobalInfo.WANTED_CATEOGIRES and take into account that this activity may be called from the navigation drawer!
 
 public class CategoriesActivity extends AppCompatActivity {
 
 
     public static String TAG = "CategoriesActivity";
-
 
     private ListView listViewCategories;
     private RelativeLayout layoutNext;
@@ -72,9 +71,11 @@ public class CategoriesActivity extends AppCompatActivity {
             this.finish();
         }
 
+        colorAboveTheToolbar();
+
         toolbar = (Toolbar) findViewById(R.id.toolbarCategories);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Теми");
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_categories_activity));
         //alreadySetHeaderView = false;
 
         Log.i(TAG, "Preparing to configure the list view..");
@@ -96,7 +97,7 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void configureLayoutNext() {
-        final Activity act = this;
+
         layoutNext = (RelativeLayout) toolbar.findViewById(R.id.layoutNext);
         layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +126,7 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void showToastForBadSpecification() {
-        Toast.makeText(this, "You can't have 0 categories for reading.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.warning_at_least_one_category), Toast.LENGTH_LONG).show();
     }
 
     private int countCategoriesToRead() {
@@ -155,16 +156,23 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void putSpecificationInSharedPreferences() {
+        String func_tag = "putSpecificationInSharedPreferences(): ";
 
         List<Boolean> specification = adapter.getSpecification();
 
         SharedPreferences pref = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
-        List<Category> categories = GlobalInfo.CATEGORIES;
+        List<Category> categories = adapter.getData();
 
-        for (int i = 0; i < categories.size(); i++) {
-            editor.putBoolean(categories.get(i).getName(), specification.get(i));
+        int i=0;
+        for (Category category : categories) {
+
+            // maybe we should put the ID here, instead of the name
+            editor.putBoolean(category.getName(), specification.get(i));
+
+            Log.i(TAG, String.format("%s%s: %b", func_tag, category.getName(), specification.get(i)));
+            i++;
         }
 
         editor.commit();
@@ -216,7 +224,6 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        Log.i(TAG, func_tag + "preparing to post the runnable.");
 
         Log.i(TAG, func_tag + "exit");
     }
@@ -240,6 +247,10 @@ public class CategoriesActivity extends AppCompatActivity {
 
                 showCategories(list);
 
+                if(null != list && list.size() > 0) {
+                    storeCategories(list);
+                }
+
             }
         });
 
@@ -247,11 +258,14 @@ public class CategoriesActivity extends AppCompatActivity {
 
     }
 
+    // after we've got the categories from the server, store them in SharedPreferences for just in case
+    private void storeCategories(List<Category> categories) {
+
+    }
+
     // show the categories (with a header) in the listview
     private void showCategories(List<Category> list) {
-
-
-
+        String func_tag = "showCategories(): ";
 
         // we should consider whether we need to add a header as a description
         // maybe a snicker ?
@@ -260,18 +274,31 @@ public class CategoriesActivity extends AppCompatActivity {
             listViewCategories.addHeaderView(listHeader);
             alreadySetHeaderView = true;
         }*/
+
         adapter = new CategoriesAdapter(this, 0, list);
         listViewCategories.setAdapter(adapter);
 
-
+        Log.i(TAG, func_tag + "Connected the adapter with the listview.");
         if (swipeView.isRefreshing()) {
+            Log.i(TAG, func_tag + "The swipe view is refreshing, so let's post a runnable to stop refreshing");
+
             swipeView.post(new Runnable() {
                 @Override
                 public void run() {
                     swipeView.setRefreshing(false);
                 }
             });
+        } else {
+            Log.i(TAG, func_tag + "Strangely, the swipe view is not refreshing.");
         }
 
+    }
+
+
+    private void colorAboveTheToolbar() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.primaryColorDark));
     }
 }

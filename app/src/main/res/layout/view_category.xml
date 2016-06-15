@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/imgCategory"
         android:text="Македонија"
-        android:textAppearance="?android:textAppearanceLarge"
+        android:textAppearance="?android:textAppearanceMedium"
        />
 
 

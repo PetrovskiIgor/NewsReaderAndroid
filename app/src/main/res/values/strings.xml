@@ -9,6 +9,10 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="list_categories_header">Изберете за кои теми сакате да се информирате.</string>
     <string name="list_sources_header">Изберете од кои извори сакате да ги добивате информациите.</string>
+    <string name="title_categories_activity">Изберете теми</string>
+    <string name="title_sources_activity">Изберете извори</string>
+    <string name="warning_at_least_one_source">Изберете барем еден извор за читање.</string>
+    <string name="warning_at_least_one_category">Изберете барем една категорија за читање.</string>
 
     <string-array name="categories_array">
         <item>Најнови</item>

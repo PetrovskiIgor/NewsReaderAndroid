@@ -59,6 +59,11 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
         this.notifyDataSetChanged();
     }
 
+
+    public List<Category> getData() {
+        return data;
+    }
+
     @Override
     public int getCount() {
         if(null == data) return 0;

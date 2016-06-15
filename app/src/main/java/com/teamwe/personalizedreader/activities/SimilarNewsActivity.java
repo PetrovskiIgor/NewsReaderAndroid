@@ -2,23 +2,17 @@ package com.teamwe.personalizedreader.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.teamwe.personalizedreader.adapters.NewsPostsAdapter;
-import com.teamwe.personalizedreader.model.Cluster;
 
 import com.teamwe.personalizedreader.model.NewsPost;
-import com.teamwe.personalizedreader.mynews.GlobalInfo;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 
 import java.util.ArrayList;

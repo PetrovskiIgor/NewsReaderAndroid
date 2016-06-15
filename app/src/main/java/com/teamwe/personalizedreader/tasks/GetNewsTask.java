@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.ClusterWrapper;
-import com.teamwe.personalizedreader.mynews.GlobalInfo;
+import com.teamwe.personalizedreader.GlobalInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

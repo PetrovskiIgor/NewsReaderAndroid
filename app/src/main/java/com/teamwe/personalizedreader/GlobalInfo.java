@@ -1,4 +1,4 @@
-package com.teamwe.personalizedreader.mynews;
+package com.teamwe.personalizedreader;
 
 import com.teamwe.personalizedreader.model.Category;
 
@@ -15,7 +15,7 @@ public class GlobalInfo {
     public static String NEWS_TITLE = "newsTitle";
     public static String NEWS_URL = "newsUrl";
     public static String LIST_NEWS = "listNews";
-    public static String SERVER_IP = "192.168.1.110:8083";
+    public static String SERVER_IP = "192.168.1.105:8083";
     public static List<Category> CATEGORIES = new ArrayList<Category>() {{
         add(new Category("MAKEDONIJA","Македонија"));
         add(new Category("EKONOMIJA", "Економија"));
@@ -41,4 +41,7 @@ public class GlobalInfo {
     public static String CAT_SPECIFICATION_PREF="categoriesSpecification";
     public static final String SOURCES_SPECIFICATION_PREF = "sourcesSpecification";
     public static final String WANTED_SOURCES = "wantedSources";
+
+
+    public static final String WANTED_CATEOGIRES = "wantedCategories";
 }

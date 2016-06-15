@@ -1,22 +1,16 @@
 package com.teamwe.personalizedreader.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.Window;
-import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-import com.teamwe.personalizedreader.mynews.GlobalInfo;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 
 public class NewsPostActivity extends AppCompatActivity {

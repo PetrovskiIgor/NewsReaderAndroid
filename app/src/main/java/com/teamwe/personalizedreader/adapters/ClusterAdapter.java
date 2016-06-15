@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import com.teamwe.personalizedreader.activities.SimilarNewsActivity;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
-import com.teamwe.personalizedreader.mynews.GlobalInfo;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 
 import java.util.ArrayList;

@@ -6,6 +6,7 @@
     android:paddingLeft="7dp"
     android:paddingTop="7dp"
     android:paddingRight="7dp"
+    android:background="@color/sysWhite"
     >
 
     <ImageView
@@ -50,7 +51,7 @@
         android:text="СЛИЧНИ ВЕСТИ"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorSecondary"/>
 
     <TextView
         android:id="@+id/textViewSourceUrl"

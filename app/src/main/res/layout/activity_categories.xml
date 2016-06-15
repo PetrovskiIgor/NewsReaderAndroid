@@ -1,69 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.teamwe.personalizedreader.activities.CategoriesActivity">
-
-    <android.support.design.widget.AppBarLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbarParent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context="com.teamwe.personalizedreader.activities.CategoriesActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarCategories"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbarParent"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
 
-            <RelativeLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarCategories"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:title="Теми"
+                android:titleTextColor="@color/sysWhite"
                 >
-                <RelativeLayout
-                    android:id="@+id/layoutNext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true">
-                    <TextView
-                        android:id="@+id/txtNext"
+
+                    <RelativeLayout
+                        android:id="@+id/layoutNext"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@color/white"
-                        android:text="Следно"
-                        android:layout_marginLeft="10dp"
-                        />
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right">
+                        <TextView
+                            android:id="@+id/txtNext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:textAppearance="?android:textAppearanceMedium"
+                            android:textColor="@color/white"
+                            android:text="Следно"
+                            android:layout_marginLeft="10dp"
+                            />
 
-                    <ImageView
-                        android:id="@+id/btnNext"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/txtNext"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/arrow_right"
-                        android:layout_marginRight="15dp"
-                        android:tint="@color/sysWhite"
-                        />
-                </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/btnNext"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/txtNext"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/arrow_right"
+                            android:layout_marginRight="15dp"
+                            android:tint="@color/sysWhite"
+                            />
+                    </RelativeLayout>
 
 
-            </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
 
-        </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
 
-    </android.support.design.widget.AppBarLayout>
-
-    <ListView
-        android:id="@+id/listCategories"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarParent"></ListView>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarParent"
+        android:id="@+id/swipeLayoutCategories">
 
+        <ListView
+            android:id="@+id/listCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ></ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
+
+

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Panda Feeder</string>
+    <string name="app_name">Мој Весник</string>
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -7,6 +7,8 @@
     <string name="pick_news">Изберете извор</string>
     <string name="next">Следно   </string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="list_categories_header">Изберете за кои теми сакате да се информирате.</string>
+    <string name="list_sources_header">Изберете од кои извори сакате да ги добивате информациите.</string>
 
     <string-array name="categories_array">
         <item>Најнови</item>
@@ -23,4 +25,5 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_similar_news">Слични вести</string>
+    <string name="no_internet">Нема интернет</string>
 </resources>

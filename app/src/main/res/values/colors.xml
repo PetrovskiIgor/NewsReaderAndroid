@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary_second_choice">#E0F7FA</color>
-    <color name="colorPrimary">#43A047</color>
-    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorSecondary">#43A047</color>
+    <color name="colorSecondaryDark">#388E3C</color>
     <color name="colorAccent">#F57F17</color>
     <color name="fab_color">#EF6C00</color>
-    <color name="primaryColor">#43A047</color>
+    <color name="secondaryColor">#43A047</color>
     <color name="sysWhite">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#0091EA</color>
+    <color name="primaryColor">#4DD0E1</color>
+    <color name="primaryColorDark">#00B8D4</color>
 </resources>

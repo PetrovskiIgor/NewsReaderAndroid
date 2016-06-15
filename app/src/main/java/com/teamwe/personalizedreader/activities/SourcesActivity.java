@@ -74,6 +74,11 @@ public class SourcesActivity extends AppCompatActivity {
         });
 
 
+        loadSources();
+
+    }
+
+    private void loadSources(){
         SourcesTask task = new SourcesTask(new OnSourcesHere() {
             @Override
             public void onTaskCompleted(List<Source> data) {

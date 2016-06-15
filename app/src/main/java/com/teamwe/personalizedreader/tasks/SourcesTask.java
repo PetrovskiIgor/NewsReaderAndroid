@@ -67,7 +67,7 @@ public class SourcesTask extends AsyncTask<Void, Void, List<Source>> {
             sources = gson.fromJson(sb.toString(), typeToken);
 
 
-            Log.i(TAG, " Uspeshna konverzija. clusters.size() = " + sources.size());
+            Log.i(TAG, " Uspeshna konverzija. sources.size() = " + sources.size());
 
         }catch(UnsupportedEncodingException e) {
             Log.i(TAG, " doInBackground: UnsupportedEncodingException: " + e.getMessage());

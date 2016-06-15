@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.teamwe.personalizedreader.activities.MainActivity"
-    tools:showIn="@layout/activity_main">
+   >
 
     <com.teamwe.personalizedreader.navigation.WordsSlidingTabLayout
         android:id="@+id/sliding_tabs"

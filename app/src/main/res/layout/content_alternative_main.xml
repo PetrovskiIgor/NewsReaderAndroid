@@ -7,7 +7,9 @@
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.teamwe.personalizedreader.activities.AlternativeMain"
-        tools:showIn="@layout/app_bar_alternative_main">
+        tools:showIn="@layout/app_bar_alternative_main"
+
+        >
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,6 +21,14 @@
             android:id="@+id/listNews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+
+        <include layout="@layout/content_no_internet"
+            android:id="@+id/layout_no_internet"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"/>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
 

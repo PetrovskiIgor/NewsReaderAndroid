@@ -1,11 +1,13 @@
 package com.teamwe.personalizedreader.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,10 +21,10 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
@@ -32,7 +34,6 @@ import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.GetNewsTask;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +43,8 @@ public class AlternativeMain extends AppCompatActivity
     public static String TAG = "AlternativeMain";
     // the list where we load the news into
     private ListView listViewNews;
+
+    private RelativeLayout layoutNoInternet;
 
     // the news of the current category that is shown to the user
 
@@ -54,6 +57,8 @@ public class AlternativeMain extends AppCompatActivity
     // the material design swiping layout
     private SwipeRefreshLayout swipeView;
 
+    private boolean noInternet = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,7 @@ public class AlternativeMain extends AppCompatActivity
 
 
         listViewNews = (ListView) findViewById(R.id.listNews);
+        layoutNoInternet = (RelativeLayout)findViewById(R.id.layout_no_internet);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -134,7 +140,7 @@ public class AlternativeMain extends AppCompatActivity
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
                 Log.i(TAG, "onScroll: firstVisibleItem: " + firstVisibleItem + " visibleItemCount: " + visibleItemCount + " totalItemCount: " + totalItemCount);
-                if (0 == firstVisibleItem) {
+                if (0 == firstVisibleItem || noInternet) {
                     swipeView.setEnabled(true);
                 } else {
                     swipeView.setEnabled(false);
@@ -146,12 +152,38 @@ public class AlternativeMain extends AppCompatActivity
     // method for loading the news (from the selected category) into the listview
     private void loadNews() {
 
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo info = manager.getActiveNetworkInfo();
+
+
+        // We need to check the internet connection
+        if(null == info || !info.isConnected()) {
+
+            layoutNoInternet.setVisibility(View.VISIBLE);
+            listViewNews.setVisibility(View.GONE);
+
+            Log.i(TAG, "No internet connection.");
+            Toast.makeText(this, " NO INTERNET CONNECTION! ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(layoutNoInternet.getVisibility() == View.VISIBLE) {
+            layoutNoInternet.setVisibility(View.GONE);
+        }
+
+        if(listViewNews.getVisibility() == View.GONE) {
+            listViewNews.setVisibility(View.VISIBLE);
+        }
+
         swipeView.post(new Runnable() {
             @Override
             public void run() {
                 swipeView.setRefreshing(true);
             }
         });
+
+
 
         final Activity act = this;
 

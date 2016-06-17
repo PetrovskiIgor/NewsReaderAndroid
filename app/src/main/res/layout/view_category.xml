@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/imgCategory"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"/>
 
 
 
@@ -24,6 +24,7 @@
         android:layout_toRightOf="@+id/imgCategory"
         android:text="Македонија"
         android:textAppearance="?android:textAppearanceMedium"
+        android:layout_marginLeft="10dp"
        />
 
 

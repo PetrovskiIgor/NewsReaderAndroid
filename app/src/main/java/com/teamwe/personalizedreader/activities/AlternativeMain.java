@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 
@@ -22,9 +23,14 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
@@ -34,6 +40,7 @@ import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.GetNewsTask;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -60,6 +67,12 @@ public class AlternativeMain extends AppCompatActivity
     private boolean noInternet = false;
 
 
+    private NavigationView navigationView;
+
+
+    private ListView listViewCategories;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +82,7 @@ public class AlternativeMain extends AppCompatActivity
 
 
         listViewNews = (ListView) findViewById(R.id.listNews);
-        layoutNoInternet = (RelativeLayout)findViewById(R.id.layout_no_internet);
+        layoutNoInternet = (RelativeLayout) findViewById(R.id.layout_no_internet);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -78,14 +91,45 @@ public class AlternativeMain extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        populateNavigationView();
 
         configureListView();
 
         configureSwipeView();
         loadNews();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
+    }
+
+    private void populateNavigationView() {
+
+
+        listViewCategories = (ListView) navigationView.findViewById(R.id.listViewCategories);
+        final Activity act = this;
+
+        listViewCategories.setDivider(null);
+
+        final CategoriesAdapter adapter = new CategoriesAdapter(this, 0, GlobalInfo.CATEGORIES, true);
+        listViewCategories.setAdapter(adapter);
+
+        listViewCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(act, "Position: " + position, Toast.LENGTH_SHORT).show();
+                ;
+
+                act.setTitle(adapter.getData().get(position).getName());
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+
     }
 
 
@@ -152,13 +196,13 @@ public class AlternativeMain extends AppCompatActivity
     // method for loading the news (from the selected category) into the listview
     private void loadNews() {
 
-        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo info = manager.getActiveNetworkInfo();
 
 
         // We need to check the internet connection
-        if(null == info || !info.isConnected()) {
+        if (null == info || !info.isConnected()) {
 
             layoutNoInternet.setVisibility(View.VISIBLE);
             listViewNews.setVisibility(View.GONE);
@@ -168,11 +212,11 @@ public class AlternativeMain extends AppCompatActivity
             return;
         }
 
-        if(layoutNoInternet.getVisibility() == View.VISIBLE) {
+        if (layoutNoInternet.getVisibility() == View.VISIBLE) {
             layoutNoInternet.setVisibility(View.GONE);
         }
 
-        if(listViewNews.getVisibility() == View.GONE) {
+        if (listViewNews.getVisibility() == View.GONE) {
             listViewNews.setVisibility(View.VISIBLE);
         }
 
@@ -182,7 +226,6 @@ public class AlternativeMain extends AppCompatActivity
                 swipeView.setRefreshing(true);
             }
         });
-
 
 
         final Activity act = this;
@@ -242,6 +285,9 @@ public class AlternativeMain extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -280,13 +326,16 @@ public class AlternativeMain extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
     }
 }

@@ -20,10 +20,22 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
 
     private List<Source> data;
     private Context context;
+
+    private boolean inNavigationDrawer;
+
     public SourcesAdapter(Context context, int resource, List<Source> data) {
         super(context, resource);
         this.context = context;
         this.data = data;
+
+        this.inNavigationDrawer = false;
+    }
+
+    public SourcesAdapter(Context context, int resource, List<Source> data, boolean inNavigationDrawer) {
+        super(context, resource);
+        this.context = context;
+        this.data = data;
+        this.inNavigationDrawer = inNavigationDrawer;
     }
 
     @Override
@@ -32,6 +44,10 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
 
 
         return data.size();
+    }
+
+    public List<Source> getData() {
+        return data;
     }
 
 
@@ -47,19 +63,24 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
 
         txtSource.setText(currSource.getPrettyUrl());
 
-        if(currSource.isChecked()) {
-            cbSource.setChecked(true);
-        } else {
-            cbSource.setChecked(false);
-        }
 
-
-        cbSource.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                data.get(position).setIsChecked(isChecked);
+        if(!inNavigationDrawer) {
+            if (currSource.isChecked()) {
+                cbSource.setChecked(true);
+            } else {
+                cbSource.setChecked(false);
             }
-        });
+
+
+            cbSource.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    data.get(position).setIsChecked(isChecked);
+                }
+            });
+        } else {
+            cbSource.setVisibility(View.GONE);
+        }
 
 
         return convertView;

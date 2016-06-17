@@ -40,7 +40,7 @@ public class GlobalInfo {
 
     public static String CAT_SPECIFICATION_PREF="categoriesSpecification";
     public static final String SOURCES_SPECIFICATION_PREF = "sourcesSpecification";
-    public static final String WANTED_SOURCES = "wantedSources";
+    public static final String SELECTED_SOURCES = "wantedSources";
 
 
     public static final String WANTED_CATEOGIRES = "wantedCategories";

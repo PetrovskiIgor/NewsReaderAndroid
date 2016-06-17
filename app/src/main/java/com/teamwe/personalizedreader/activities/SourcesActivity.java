@@ -19,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import com.commonsware.cwac.merge.MergeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.teamwe.personalizedreader.adapters.SourcesAdapter;
 import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.GlobalInfo;
@@ -26,9 +29,10 @@ import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.OnSourcesHere;
 import com.teamwe.personalizedreader.tasks.SourcesTask;
 
-import java.util.HashSet;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 public class SourcesActivity extends AppCompatActivity {
 
@@ -41,6 +45,8 @@ public class SourcesActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeView;
 
     private Toolbar toolbar;
+
+
 
     // the layout, when clicked, brings us to the main activity
     private RelativeLayout layoutNext;
@@ -161,18 +167,27 @@ public class SourcesActivity extends AppCompatActivity {
             List<Source> sources = adapter.getSources();
             SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            HashSet<String> wanted = new HashSet<>();
+
+            List<Source> selectedSources = new ArrayList<Source>();
+
+
             for (Source s : sources) {
                 if (s.isChecked()) {
-                    wanted.add(s.getId()+"");
+                    selectedSources.add(s);
                 }
             }
 
-            for(String wantedSource : wanted) {
-                Log.i(TAG, String.format("%s%s: true",func_tag,wantedSource));
+            for(Source wantedSource : selectedSources) {
+                Log.i(TAG, String.format("%s%s: true",func_tag,wantedSource.toString()));
             }
 
-            editor.putStringSet(GlobalInfo.WANTED_SOURCES, wanted);
+            Gson gson = new Gson();
+            Type typeToken = new TypeToken<List<Source>>() {}.getType();
+
+            String gsonFormatList = gson.toJson(selectedSources, typeToken);
+
+            editor.putString(GlobalInfo.SELECTED_SOURCES, gsonFormatList);
+
             editor.commit();
         }
     }
@@ -226,14 +241,33 @@ public class SourcesActivity extends AppCompatActivity {
         String func_tag = "showSources(): ";
 
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
-        Set<String> wantedSources = preferences.getStringSet(GlobalInfo.WANTED_SOURCES, new HashSet<String>());
 
+        String gsonList =  gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
 
-        for (Source s : data) {
-            if (!callFromMainActivity) {
-                s.setIsChecked(true);
-            } else {
-                s.setIsChecked(wantedSources.contains(s.getId() + ""));
+        if (gsonList.length() > 0) {
+
+            Gson gson = new Gson();
+
+            Type typeToken = new TypeToken<List<Source>>() {}.getType();
+
+            List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
+
+            for (Source s : data) {
+                if (!callFromMainActivity) {
+                    s.setIsChecked(true);
+                } else {
+
+                    boolean isSelected = false;
+
+                    for(Source selected : selectedSources) {
+                        if (selected.getId() == s.getId()) {
+                            isSelected = true;
+                            break;
+                        }
+                    }
+
+                    s.setIsChecked(isSelected);
+                }
             }
         }
 

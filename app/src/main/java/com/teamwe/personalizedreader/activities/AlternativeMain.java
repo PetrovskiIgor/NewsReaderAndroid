@@ -3,6 +3,7 @@ package com.teamwe.personalizedreader.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -16,30 +17,39 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 
+import com.commonsware.cwac.merge.MergeAdapter;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.teamwe.personalizedreader.adapters.AdjustmentAdapter;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
+import com.teamwe.personalizedreader.adapters.SourcesAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
 import com.teamwe.personalizedreader.GlobalInfo;
+import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.GetNewsTask;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +68,9 @@ public class AlternativeMain extends AppCompatActivity
     // DEFAULT-noto nema da bide ova!!!
     private Category currentCategory = new Category("MAKEDONIJA", "Македонија");
 
+
+    private Source currentSource;
+
     // the adapter for the listview
     private ClusterAdapter adapter;
 
@@ -71,6 +84,11 @@ public class AlternativeMain extends AppCompatActivity
 
 
     private ListView listViewCategories;
+
+    private ListView listViewSources;
+
+
+    private ListView listViewNV;
 
 
     @Override
@@ -97,7 +115,6 @@ public class AlternativeMain extends AppCompatActivity
         populateNavigationView();
 
         configureListView();
-
         configureSwipeView();
         loadNews();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -107,14 +124,106 @@ public class AlternativeMain extends AppCompatActivity
 
     private void populateNavigationView() {
 
+        listViewNV = (ListView)findViewById(R.id.listViewNV);
+        listViewNV.setDivider(null);
+        final CategoriesAdapter adapterCategories = new CategoriesAdapter(this, 0, GlobalInfo.CATEGORIES, true);
 
-        listViewCategories = (ListView) navigationView.findViewById(R.id.listViewCategories);
+        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+
+        String gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        Gson gson = new Gson();
+        Type typeToken = new TypeToken<List<Source>>() {}.getType();
+        List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
+
+
+        final SourcesAdapter sourcesAdapter = new SourcesAdapter(this, 0, selectedSources, true);
+
+        final AdjustmentAdapter adjustmentAdapter = new AdjustmentAdapter(this, 0);
+
+
+        final MergeAdapter mergeAdapter = new MergeAdapter();
+
+        // categories
+        View headerCategories = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_categories, null);
+        mergeAdapter.addView(headerCategories);
+        mergeAdapter.addAdapter(adapterCategories);
+
+        //adjustments
+        View headerAdjustments = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_adjustments,null);
+        mergeAdapter.addView(headerAdjustments);
+        mergeAdapter.addAdapter(adjustmentAdapter);
+
+        // sources
+        View headerSources = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_sources,null);
+        mergeAdapter.addView(headerSources);
+        mergeAdapter.addAdapter(sourcesAdapter);
+
+
+
+
+        listViewNV.setAdapter(mergeAdapter);
+
+
+        final Activity act = this;
+
+        listViewNV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                int sz_1 = adapterCategories.getData().size() + 1;
+                int sz_2 = adjustmentAdapter.getCount() + 1;
+
+
+                if (position < sz_1) {
+
+                    int relativePosition = position - 1;
+                    Category cat = adapterCategories.getData().get(relativePosition);
+
+                    currentCategory = cat;
+                    currentSource = null;
+
+                    act.setTitle(currentCategory.getTitle());
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+
+                    loadNews();
+                    //Toast.makeText(act, cat.getTitle(), Toast.LENGTH_SHORT).show();
+                } else if(position < sz_1 + sz_2){
+                    int relativePosition = position - sz_1 - 1;
+                    if(relativePosition == 0) {
+                        Toast.makeText(act, "Мои теми", Toast.LENGTH_SHORT).show();
+                    } else if(relativePosition == 1) {
+                        Toast.makeText(act, "Мои извори", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(act, "Relative position isn't 0 nor 1. Something is wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int relativePosition = position - sz_1 - sz_2 - 1;
+
+                    Source source = sourcesAdapter.getData().get(relativePosition);
+                    //Toast.makeText(act, source.getPrettyUrl(), Toast.LENGTH_SHORT).show();
+
+                    currentSource = source;
+                    currentCategory = null;
+
+                    act.setTitle(currentSource.getPrettyUrl());
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+
+
+            }
+        });
+
+
+
+        /*listViewCategories = (ListView) navigationView.findViewById(R.id.listViewCategories);
         final Activity act = this;
 
         listViewCategories.setDivider(null);
 
-        final CategoriesAdapter adapter = new CategoriesAdapter(this, 0, GlobalInfo.CATEGORIES, true);
-        listViewCategories.setAdapter(adapter);
+
 
         listViewCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -127,6 +236,30 @@ public class AlternativeMain extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
             }
         });
+
+
+        listViewSources = (ListView)navigationView.findViewById(R.id.listViewSources);
+
+        listViewSources.setDivider(null);
+
+        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+
+        String gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        Gson gson = new Gson();
+        Type typeToken = new TypeToken<List<Source>>() {}.getType();
+        List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
+
+
+        final SourcesAdapter sourcesAdapter = new SourcesAdapter(this, 0, selectedSources, true);
+        listViewSources.setAdapter(sourcesAdapter);
+        listViewSources.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                act.setTitle(sourcesAdapter.getData().get(position).getPrettyUrl());
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });*/
 
 
 

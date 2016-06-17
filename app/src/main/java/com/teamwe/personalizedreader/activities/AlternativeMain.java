@@ -39,6 +39,7 @@ import com.google.gson.reflect.TypeToken;
 import com.teamwe.personalizedreader.adapters.AdjustmentAdapter;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
+import com.teamwe.personalizedreader.adapters.NewsPostsAdapter;
 import com.teamwe.personalizedreader.adapters.SourcesAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
@@ -46,7 +47,9 @@ import com.teamwe.personalizedreader.model.NewsPost;
 import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.mynews.R;
+import com.teamwe.personalizedreader.tasks.GetNewsFromSourceTask;
 import com.teamwe.personalizedreader.tasks.GetNewsTask;
+import com.teamwe.personalizedreader.tasks.OnNewsFromSourceHere;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
 import java.lang.reflect.Type;
@@ -73,6 +76,9 @@ public class AlternativeMain extends AppCompatActivity
 
     // the adapter for the listview
     private ClusterAdapter adapter;
+
+
+    private NewsPostsAdapter adapterNewsFromSource;
 
     // the material design swiping layout
     private SwipeRefreshLayout swipeView;
@@ -189,11 +195,11 @@ public class AlternativeMain extends AppCompatActivity
 
                     loadNews();
                     //Toast.makeText(act, cat.getTitle(), Toast.LENGTH_SHORT).show();
-                } else if(position < sz_1 + sz_2){
+                } else if (position < sz_1 + sz_2) {
                     int relativePosition = position - sz_1 - 1;
-                    if(relativePosition == 0) {
+                    if (relativePosition == 0) {
                         Toast.makeText(act, "Мои теми", Toast.LENGTH_SHORT).show();
-                    } else if(relativePosition == 1) {
+                    } else if (relativePosition == 1) {
                         Toast.makeText(act, "Мои извори", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(act, "Relative position isn't 0 nor 1. Something is wrong!", Toast.LENGTH_SHORT).show();
@@ -210,6 +216,8 @@ public class AlternativeMain extends AppCompatActivity
                     act.setTitle(currentSource.getPrettyUrl());
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
+
+                    loadNewsFromSource();
                 }
 
 
@@ -217,49 +225,6 @@ public class AlternativeMain extends AppCompatActivity
         });
 
 
-
-        /*listViewCategories = (ListView) navigationView.findViewById(R.id.listViewCategories);
-        final Activity act = this;
-
-        listViewCategories.setDivider(null);
-
-
-
-        listViewCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(act, "Position: " + position, Toast.LENGTH_SHORT).show();
-                ;
-
-                act.setTitle(adapter.getData().get(position).getName());
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-            }
-        });
-
-
-        listViewSources = (ListView)navigationView.findViewById(R.id.listViewSources);
-
-        listViewSources.setDivider(null);
-
-        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
-
-        String gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
-        Gson gson = new Gson();
-        Type typeToken = new TypeToken<List<Source>>() {}.getType();
-        List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
-
-
-        final SourcesAdapter sourcesAdapter = new SourcesAdapter(this, 0, selectedSources, true);
-        listViewSources.setAdapter(sourcesAdapter);
-        listViewSources.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                act.setTitle(sourcesAdapter.getData().get(position).getPrettyUrl());
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-            }
-        });*/
 
 
 
@@ -272,9 +237,16 @@ public class AlternativeMain extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Cluster currentCluster = adapter.getCluster(position);
+                NewsPost toLoad = null;
+                if(adapter != null) {
+                    Cluster currentCluster = adapter.getCluster(position);
+                    toLoad = currentCluster.listNews.get(0);
 
-                loadWebView(currentCluster.listNews.get(0));
+                } else {
+                    toLoad = adapterNewsFromSource.getNewsPost(position);
+                }
+
+                loadWebView(toLoad);
             }
         });
     }
@@ -326,6 +298,43 @@ public class AlternativeMain extends AppCompatActivity
         });
     }
 
+
+    private void loadNewsFromSource() {
+        swipeView.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeView.setRefreshing(true);
+            }
+        });
+
+        final Activity act = this;
+
+
+
+        GetNewsFromSourceTask task = new GetNewsFromSourceTask(new OnNewsFromSourceHere(){
+            @Override
+            public void onTaskCompleted(List<NewsPost> list) {
+
+                adapterNewsFromSource = new NewsPostsAdapter(act, list);
+                listViewNews.setAdapter(adapterNewsFromSource);
+
+                adapter = null;
+
+                if (swipeView.isRefreshing()) {
+                    swipeView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            swipeView.setRefreshing(false);
+                        }
+                    });
+                }
+            }
+        });
+
+        task.execute(currentSource);
+
+    }
+
     // method for loading the news (from the selected category) into the listview
     private void loadNews() {
 
@@ -370,6 +379,8 @@ public class AlternativeMain extends AppCompatActivity
             public void onTaskCompleted(List<Cluster> list) {
                 adapter = new ClusterAdapter(act, list);
                 listViewNews.setAdapter(adapter);
+
+                adapterNewsFromSource = null;
 
                 if (swipeView.isRefreshing()) {
                     swipeView.post(new Runnable() {

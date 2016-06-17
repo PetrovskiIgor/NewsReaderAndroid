@@ -21,9 +21,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Petre on 1/5/2016.
- */
+
 public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
     private static final String TAG = "GetNews";
     private final Set<String> wanted;

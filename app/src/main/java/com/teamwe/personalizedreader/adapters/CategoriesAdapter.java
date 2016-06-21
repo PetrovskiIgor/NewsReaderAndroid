@@ -25,7 +25,6 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
 
     List<Category> data;
     Context context;
-    List<Boolean> isChecked;
 
     boolean inNavigationDrawer;
 
@@ -34,14 +33,6 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
 
         this.data = data;
         this.context = context;
-        this.isChecked = new ArrayList<Boolean> ();
-
-
-        // all categories are checked in the beginning
-        for(Category cat : data) {
-            isChecked.add(true);
-        }
-
         this.inNavigationDrawer = false;
     }
 
@@ -50,32 +41,12 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
 
         this.data = data;
         this.context = context;
-        this.isChecked = new ArrayList<Boolean> ();
-
-
-        // all categories are checked in the beginning
-        for(Category cat : data) {
-            isChecked.add(true);
-        }
-
         this.inNavigationDrawer = inNavigationDrawer;
     }
 
 
-
-
-    public void addAll(List<Category> elems) {
-        data = elems;
-        this.notifyDataSetChanged();
-    }
-
-    public void addCurrentSpecification(List<Boolean> elements){
-        this.isChecked = elements;
-        this.notifyDataSetChanged();
-    }
-
-    public List<Boolean> getSpecification() {
-        return this.isChecked;
+    public List<Category> getCategories() {
+        return this.data;
     }
 
     public void add(Category element) {
@@ -114,13 +85,13 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
 
 
         if (!inNavigationDrawer) {
-            txtCategory.setText(data.get(position).getName());
-            checkBox.setChecked(isChecked.get(position));
+            txtCategory.setText(data.get(position).getTitle());
+            checkBox.setChecked(data.get(position).getCheckedState());
 
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean ic) {
-                    isChecked.set(position, ic);
+                    data.get(position).setCheckedState(ic);
                 }
             });
         } else {

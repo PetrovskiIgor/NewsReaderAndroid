@@ -132,17 +132,28 @@ public class AlternativeMain extends AppCompatActivity
 
         listViewNV = (ListView)findViewById(R.id.listViewNV);
         listViewNV.setDivider(null);
-        final CategoriesAdapter adapterCategories = new CategoriesAdapter(this, 0, GlobalInfo.CATEGORIES, true);
 
-        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
-        String gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        // --- load the categories --
+        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+        String gsonList = preferences.getString(GlobalInfo.SELECTED_CATEGORIES, "");
         Gson gson = new Gson();
-        Type typeToken = new TypeToken<List<Source>>() {}.getType();
+        Type typeToken = new TypeToken<List<Category>>() {}.getType();
+        List<Category> selectedCategories = gson.fromJson(gsonList, typeToken);
+
+        final CategoriesAdapter adapterCategories = new CategoriesAdapter(this, 0, selectedCategories, true);
+        // --- loaded the categories ---
+
+        // --- load the sources --
+        preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+
+        gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        gson = new Gson();
+        typeToken = new TypeToken<List<Source>>() {}.getType();
         List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
 
-
         final SourcesAdapter sourcesAdapter = new SourcesAdapter(this, 0, selectedSources, true);
+        // --- loaded the sources --
 
         final AdjustmentAdapter adjustmentAdapter = new AdjustmentAdapter(this, 0);
 

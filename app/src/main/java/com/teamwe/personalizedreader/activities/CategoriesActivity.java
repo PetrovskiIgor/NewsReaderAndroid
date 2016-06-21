@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.GlobalInfo;
@@ -27,6 +29,7 @@ import com.teamwe.personalizedreader.tasks.CategoriesTask;
 import com.teamwe.personalizedreader.tasks.OnCategoriesHere;
 
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,19 +81,12 @@ public class CategoriesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.title_categories_activity));
         //alreadySetHeaderView = false;
 
-        Log.i(TAG, "Preparing to configure the list view..");
+
         configureListView();
-        Log.i(TAG, "Configured the list view.");
-
-
-        Log.i(TAG, "Preparing to configure the swipe view..");
         configureSwipeView();
-
-        Log.i(TAG, "Preparing to configure the layout next..");
         configureLayoutNext();
 
 
-        Log.i(TAG, "Preparing to load the categories.");
         loadCategories();
 
 
@@ -102,8 +98,8 @@ public class CategoriesActivity extends AppCompatActivity {
         layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (countCategoriesToRead() >= 1) {
-                    putSpecificationInSharedPreferences();
+                if (countSelectedCategories() >= 1) {
+                    putSelectedCategoriesInSharedPreferences();
                     moveToNextActivity();
                 } else {
                     showToastForBadSpecification();
@@ -129,12 +125,12 @@ public class CategoriesActivity extends AppCompatActivity {
         Toast.makeText(this, getResources().getString(R.string.warning_at_least_one_category), Toast.LENGTH_LONG).show();
     }
 
-    private int countCategoriesToRead() {
+    private int countSelectedCategories() {
         int toRet = 0;
 
-        List<Boolean> specification = adapter.getSpecification();
-        for (Boolean b : specification) {
-            if (b) {
+        List<Category> categories = adapter.getCategories();
+        for (Category cat : categories) {
+            if (cat.getCheckedState()) {
                 toRet++;
             }
         }
@@ -142,40 +138,38 @@ public class CategoriesActivity extends AppCompatActivity {
         return toRet;
     }
 
-    private List<Boolean> getCurrentSpecification() {
-        List<Boolean> toRet = new ArrayList<Boolean>();
 
-        SharedPreferences pref = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
-        List<Category> categories = GlobalInfo.CATEGORIES;
+    private void putSelectedCategoriesInSharedPreferences() {
+        String func_tag = "putSelectedCategoriesInSharedPreferences(): ";
 
-        for (Category cat : categories) {
-            toRet.add(pref.getBoolean(cat.getName(), true));
+        if(null != adapter) {
+
+            List<Category> categories = adapter.getCategories();
+            SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+
+            List<Category> selectedCategories = new ArrayList<Category>();
+
+
+            for (Category cat : categories) {
+                if (cat.getCheckedState()) {
+                    selectedCategories.add(cat);
+                }
+            }
+
+            for(Category selectedCategory : selectedCategories) {
+                Log.i(TAG, String.format("%s%s: true",func_tag,selectedCategory.toString()));
+            }
+
+            Gson gson = new Gson();
+            Type typeToken = new TypeToken<List<Category>>() {}.getType();
+
+            String gsonFormatList = gson.toJson(selectedCategories, typeToken);
+
+            editor.putString(GlobalInfo.SELECTED_CATEGORIES, gsonFormatList);
+
+            editor.commit();
         }
-
-        return toRet;
-    }
-
-    private void putSpecificationInSharedPreferences() {
-        String func_tag = "putSpecificationInSharedPreferences(): ";
-
-        List<Boolean> specification = adapter.getSpecification();
-
-        SharedPreferences pref = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        List<Category> categories = adapter.getData();
-
-        int i=0;
-        for (Category category : categories) {
-
-            // maybe we should put the ID here, instead of the name
-            editor.putBoolean(category.getName(), specification.get(i));
-
-            Log.i(TAG, String.format("%s%s: %b", func_tag, category.getName(), specification.get(i)));
-            i++;
-        }
-
-        editor.commit();
     }
 
     public void moveToNextActivity() {
@@ -247,10 +241,6 @@ public class CategoriesActivity extends AppCompatActivity {
 
                 showCategories(list);
 
-                if(null != list && list.size() > 0) {
-                    storeCategories(list);
-                }
-
             }
         });
 
@@ -264,18 +254,44 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     // show the categories (with a header) in the listview
-    private void showCategories(List<Category> list) {
+    private void showCategories(List<Category> data) {
         String func_tag = "showCategories(): ";
 
-        // we should consider whether we need to add a header as a description
-        // maybe a snicker ?
-        /*if(!alreadySetHeaderView) {
-            View listHeader = LayoutInflater.from(this).inflate(R.layout.categories_list_header, null);
-            listViewCategories.addHeaderView(listHeader);
-            alreadySetHeaderView = true;
-        }*/
+        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
-        adapter = new CategoriesAdapter(this, 0, list);
+        String gsonList =  preferences.getString(GlobalInfo.SELECTED_CATEGORIES, "");
+
+        if (gsonList.length() > 0) {
+
+            Gson gson = new Gson();
+
+            Type typeToken = new TypeToken<List<Category>>() {}.getType();
+
+            List<Category> selectedCategories = gson.fromJson(gsonList, typeToken);
+
+            for (Category s : data) {
+                if (!callFromMainActivity) {
+                    s.setCheckedState(true);
+                } else {
+
+                    boolean isSelected = false;
+
+                    for(Category selected : selectedCategories) {
+                        if (selected.getId() == s.getId()) {
+                            isSelected = true;
+                            break;
+                        }
+                    }
+
+                    s.setCheckedState(isSelected);
+                }
+            }
+
+        }
+
+
+
+        adapter = new CategoriesAdapter(this, 0, data);
         listViewCategories.setAdapter(adapter);
 
         Log.i(TAG, func_tag + "Connected the adapter with the listview.");

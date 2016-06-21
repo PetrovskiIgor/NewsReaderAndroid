@@ -13,6 +13,8 @@
     <string name="title_sources_activity">Изберете извори</string>
     <string name="warning_at_least_one_source">Изберете барем еден извор за читање.</string>
     <string name="warning_at_least_one_category">Изберете барем една категорија за читање.</string>
+    <string name="going_too_early_sources">Ве молиме почекајте да се вчитаат изворите. </string>
+    <string name="going_too_early_categories">Ве молиме почекајте да се вчитаат категориите. </string>
 
     <string-array name="categories_array">
         <item>Најнови</item>

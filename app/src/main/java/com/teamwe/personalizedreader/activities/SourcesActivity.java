@@ -140,6 +140,11 @@ public class SourcesActivity extends AppCompatActivity {
         layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (null == adapter) {
+                    showToastForGoingTooEarly();
+                    return;
+                }
                 if (countSelectedSources() >= 1) {
                     putSelectedSourcesInSharedPreferences();
                     moveToNextActivity();
@@ -153,6 +158,9 @@ public class SourcesActivity extends AppCompatActivity {
     // we should change it with a snickerbar
     private void showToastForBadSpecification() {
         Toast.makeText(this, getResources().getString(R.string.warning_at_least_one_source), Toast.LENGTH_LONG).show();
+    }
+    private void showToastForGoingTooEarly() {
+        Toast.makeText(this, getResources().getString(R.string.going_too_early_sources), Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -194,7 +202,7 @@ public class SourcesActivity extends AppCompatActivity {
 
     private int countSelectedSources() {
         int toRet = 0;
-
+        // da se sredi bugfix ako ne e izload-irano sve
         List<Source> sources = adapter.getSources();
         for (Source source : sources) {
             if (source.isChecked()) {
@@ -242,7 +250,7 @@ public class SourcesActivity extends AppCompatActivity {
 
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
-        String gsonList =  gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        String gsonList =  preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
 
         if (gsonList.length() > 0) {
 

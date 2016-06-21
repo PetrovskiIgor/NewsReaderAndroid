@@ -11,6 +11,7 @@ public class NewsPost implements Parcelable {
     public String source_id;
     public String source_url;
     public String img_url;
+    public String description;
 
     public String getHost_page() {
         return host_page;
@@ -39,6 +40,7 @@ public class NewsPost implements Parcelable {
         source_id = input.readString();
         source_url = input.readString();
         img_url = input.readString();
+        description = input.readString();
 
 
     }
@@ -62,6 +64,7 @@ public class NewsPost implements Parcelable {
         dest.writeString(source_id);
         dest.writeString(source_url);
         dest.writeString(img_url);
+        dest.writeString(description);
 
     }
 

@@ -248,14 +248,11 @@ public class CategoriesActivity extends AppCompatActivity {
 
     }
 
-    // after we've got the categories from the server, store them in SharedPreferences for just in case
-    private void storeCategories(List<Category> categories) {
-
-    }
 
     // show the categories (with a header) in the listview
     private void showCategories(List<Category> data) {
         String func_tag = "showCategories(): ";
+        Log.i(TAG, func_tag + "callFromMainActivity? " + callFromMainActivity);
 
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
@@ -287,6 +284,10 @@ public class CategoriesActivity extends AppCompatActivity {
                 }
             }
 
+        } else {
+            for(Category c : data) {
+                c.setCheckedState(true);
+            }
         }
 
 

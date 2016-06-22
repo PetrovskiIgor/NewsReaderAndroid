@@ -3,14 +3,25 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:layout_marginTop="20dp">
 
+    <ImageView
+        android:id="@+id/imgSettings"
+        android:src="@drawable/ic_settings"
+        android:tint="@color/primaryColorDark"
+        android:layout_width="@dimen/img_category_width"
+        android:layout_height="@dimen/img_category_width"
+        android:layout_margin="10dp"
+
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"/>
+
     <TextView
         android:id="@+id/txtMyCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_centerVertical="true"
         android:textAppearance="?android:textAppearanceMedium"
+        android:layout_toRightOf="@+id/imgSettings"
+        android:layout_marginLeft="10dp"
         android:text="Мои теми"/>
 
 

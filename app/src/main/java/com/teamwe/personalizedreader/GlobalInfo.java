@@ -15,7 +15,7 @@ public class GlobalInfo {
     public static String NEWS_TITLE = "newsTitle";
     public static String NEWS_URL = "newsUrl";
     public static String LIST_NEWS = "listNews";
-    public static String SERVER_IP = "192.168.1.103:8083";
+    public static String SERVER_IP = "192.168.0.101:8083";
     public static List<Category> CATEGORIES = new ArrayList<Category>() {{
         add(new Category("MAKEDONIJA","Македонија", "http://img.freeflagicons.com/thumb/round_icon/macedonia/macedonia_640.png"));
         add(new Category("EKONOMIJA", "Економија", "http://static1.squarespace.com/static/54bebe07e4b0dc5217eebd19/t/5512f5a2e4b008b87901036f/1427146265321/icon-graph.png"));

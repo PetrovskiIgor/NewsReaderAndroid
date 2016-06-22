@@ -44,6 +44,7 @@ public class Category implements Parcelable {
     }
 
     public Category() {
+        this.checkedState = true;
     }
 
     public Category(Parcel input){

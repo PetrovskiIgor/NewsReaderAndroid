@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginLeft="20dp"
+    android:layout_marginLeft="10dp"
     android:layout_marginTop="20dp">
     <TextView
         android:id="@+id/txtHeaderAdjustments"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Подесување"
         android:textStyle="bold"
-        android:layout_marginLeft="50dp"
+        android:layout_margin="20dp"
         android:textAppearance="?android:textAppearanceMedium"
         >
 

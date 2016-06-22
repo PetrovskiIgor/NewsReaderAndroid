@@ -11,4 +11,10 @@
     <color name="blue">#0091EA</color>
     <color name="primaryColor">#4DD0E1</color>
     <color name="primaryColorDark">#00B8D4</color>
+    <color name="rss_color">#f26522</color>
+    <color name="rss_color_lighter">#ff6600</color>
+    <color name="rss">#ee802f</color>
+    <color name="item_selected">#EEEEEE</color>
+
+
 </resources>

@@ -277,6 +277,10 @@ public class SourcesActivity extends AppCompatActivity {
                     s.setIsChecked(isSelected);
                 }
             }
+        } else {
+            for(Source s : data) {
+                s.setIsChecked(true);
+            }
         }
 
         adapter = new SourcesAdapter(this, 0, data);

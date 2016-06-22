@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imgCategory"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/img_category_width"
+        android:layout_height="@dimen/img_category_width"
         android:layout_margin="10dp"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"/>

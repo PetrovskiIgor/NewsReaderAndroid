@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.activities.SimilarNewsActivity;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
@@ -72,6 +73,9 @@ public class NewsPostsAdapter extends BaseAdapter {
             holder.textViewNumPosts = (TextView) convertView.findViewById(R.id.textViewNumPosts);
             holder.txtSourceUrl = (TextView)convertView.findViewById(R.id.textViewSourceUrl);
             holder.imgViewPhoto = (ImageView) convertView.findViewById(R.id.imgCluster);
+            holder.txtPubDate = (TextView)convertView.findViewById(R.id.txtPubDate);
+            holder.txtDescription = (TextView)convertView.findViewById(R.id.txtDescription);
+
             convertView.setTag(holder);
         }
         else{
@@ -87,8 +91,20 @@ public class NewsPostsAdapter extends BaseAdapter {
             holder.position=position;
             String title = newsPost.getTitle();
             String imgUrl = newsPost.getImg_url();
-
             String sourceUrl = newsPost.source_url;
+            long pubDate = newsPost.pubDate;
+            String description = newsPost.description;
+
+            holder.txtPubDate.setText(GlobalInfo.configureDate(pubDate));
+
+            if(null == description)
+                description = "";
+            description = description.trim();
+            if(description.length() > 80) {
+                description = description.substring(0, 80);
+            }
+            description += "...";
+            holder.txtDescription.setText(description);
 
 
             String bStr = "http://";
@@ -182,7 +198,9 @@ public class NewsPostsAdapter extends BaseAdapter {
         TextView textViewTitle;
         TextView textViewNumPosts;
         TextView txtSourceUrl;
+        TextView txtDescription;
         ImageView imgViewPhoto;
+        TextView txtPubDate;
         int position;
     }
 }

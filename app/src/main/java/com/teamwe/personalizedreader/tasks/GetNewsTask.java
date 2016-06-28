@@ -9,6 +9,7 @@ import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.ClusterWrapper;
 import com.teamwe.personalizedreader.GlobalInfo;
+import com.teamwe.personalizedreader.model.NewsPost;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,6 +78,27 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
             ClusterWrapper wrapper  = gson.fromJson(sb.toString(),ClusterWrapper.class);
             clusters = wrapper.listClusters;
+
+
+            for(Cluster c : clusters) {
+                for(NewsPost np : c.listNews) {
+                    if(np.pubDate == 0) {
+                        np.pubDate = System.currentTimeMillis() - GlobalInfo.rg.nextInt(10)*60*60*1000;
+                    }
+                }
+            }
+
+
+            for(int i=0; i<clusters.size(); i++) {
+                for(int j=1+i; j<clusters.size(); j++) {
+                    if(clusters.get(i).listNews.size() < clusters.get(j).listNews.size()) {
+
+                        Cluster temp = clusters.get(i);
+                        clusters.set(i, clusters.get(j));
+                        clusters.set(j, temp);
+                    }
+                }
+            }
 
             Log.i(TAG, " Uspeshna konverzija. clusters.size() = " + clusters.size());
 

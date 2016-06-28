@@ -33,16 +33,17 @@ public class CategoriesTask extends AsyncTask<Void, Void, List<Category>> {
 
     @Override
     public List<Category> doInBackground(Void ... params) {
-
+        String func_tag = "doInBackground(): ";
 
         List<Category> categories = null;
         try {
+            // http://192.168.0.102:8083/
             String query = String.format("http://%s/get_categories", GlobalInfo.SERVER_IP);
-
+            Log.i(TAG, func_tag + "query: " + query);
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
             URL url = new URL(query);
-
+            Log.i(TAG, "Instanciran URL objekt od query");
             URLConnection conn = url.openConnection();
             Log.i(TAG, "doInBackground: instanciran objekt za konekcija");
             InputStream inputStream = conn.getInputStream();

@@ -41,13 +41,13 @@
 
                         <ImageView
                             android:id="@+id/btnNext"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/btn_next_width"
+                            android:layout_height="@dimen/btn_next_width"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/txtNext"
                             android:layout_marginLeft="10dp"
                             android:src="@drawable/arrow_right"
-                            android:layout_marginRight="15dp"
+                            android:layout_marginRight="@dimen/btn_next_margin_right"
                             android:tint="@color/sysWhite"
                             />
                     </RelativeLayout>
@@ -67,6 +67,8 @@
             android:id="@+id/listCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:dividerHeight="0dp"
+            android:divider="@null"
             />
 
     </android.support.v4.widget.SwipeRefreshLayout>

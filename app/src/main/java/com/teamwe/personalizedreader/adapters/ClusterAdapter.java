@@ -73,6 +73,9 @@ public class ClusterAdapter extends BaseAdapter {
             holder.textViewNumPosts = (TextView) convertView.findViewById(R.id.textViewNumPosts);
             holder.txtSourceUrl = (TextView)convertView.findViewById(R.id.textViewSourceUrl);
             holder.imgViewPhoto = (ImageView) convertView.findViewById(R.id.imgCluster);
+            holder.txtPubDate = (TextView)convertView.findViewById(R.id.txtPubDate);
+            holder.txtDescription = (TextView)convertView.findViewById(R.id.txtDescription);
+
 
             convertView.setTag(holder);
         }
@@ -90,6 +93,21 @@ public class ClusterAdapter extends BaseAdapter {
             String title = cluster.listNews.get(0).title;
             String imgUrl = cluster.listNews.get(0).img_url;
             String sourceUrl = cluster.listNews.get(0).source_url;
+            long pubDate = cluster.listNews.get(0).pubDate;
+            String description = cluster.listNews.get(0).description;
+
+
+            holder.txtPubDate.setText(GlobalInfo.configureDate(pubDate));
+
+            if(null == description)
+                description = "";
+
+            description = description.trim();
+            if(description.length() > 80) {
+                description = description.substring(0, 80);
+            }
+            description += "...";
+            holder.txtDescription.setText(description);
 
 
             String bStr = "http://";
@@ -128,7 +146,9 @@ public class ClusterAdapter extends BaseAdapter {
                 });
             }
             else{
-                holder.textViewNumPosts.setText("");
+                holder.textViewNumPosts.setVisibility(View.GONE);
+                //holder.textViewNumPosts.setText("");
+
             }
 
             if (null != imgUrl && imgUrl.length()!=0 && imgUrl.startsWith("http")) {
@@ -204,7 +224,9 @@ public class ClusterAdapter extends BaseAdapter {
     class ViewHolder{
         TextView textViewTitle;
         TextView textViewNumPosts;
+        TextView txtDescription;
         TextView txtSourceUrl;
+        TextView txtPubDate;
         ImageView imgViewPhoto;
         int position;
     }

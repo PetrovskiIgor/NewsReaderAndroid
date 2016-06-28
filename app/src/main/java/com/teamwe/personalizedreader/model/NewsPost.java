@@ -12,6 +12,7 @@ public class NewsPost implements Parcelable {
     public String source_url;
     public String img_url;
     public String description;
+    public long pubDate;
 
     public String getHost_page() {
         return host_page;

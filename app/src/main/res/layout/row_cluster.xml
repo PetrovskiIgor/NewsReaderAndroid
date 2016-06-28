@@ -6,7 +6,6 @@
     android:paddingLeft="7dp"
     android:paddingTop="7dp"
     android:paddingRight="7dp"
-
     >
 
     <ImageView
@@ -22,6 +21,8 @@
         android:layout_marginBottom="5dp"
         android:scaleType="centerCrop"/>
 
+
+
     <TextView
         android:text="Пробиени шифрите за наса"
         android:layout_width="match_parent"
@@ -30,40 +31,55 @@
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:layout_toRightOf="@+id/imgCluster"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/margin_left_title_from_img"
         />
+
     <TextView
+        android:id="@+id/textViewSourceUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:text="motika.com.mk"
+        android:layout_toRightOf="@+id/imgCluster"
         android:layout_below="@+id/textViewTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="@dimen/margin_left_title_from_img"
+        android:textColor="@color/colorSecondary"/>
+
+    <TextView
+        android:id="@+id/txtPubDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - пред 3 часа"
+        android:layout_toRightOf="@+id/textViewSourceUrl"
+        android:layout_below="@+id/textViewTitle"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Денеска се откри дека е пробиен кодот на наса, што ли ќе правиме никој не знае.."
         android:layout_toRightOf="@+id/imgCluster"
-        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/textViewSourceUrl"
+        android:layout_marginLeft="@dimen/margin_left_title_from_img"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+       />
 
     <TextView
         android:id="@+id/textViewNumPosts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/imgCluster"
+        android:layout_alignParentBottom="true"
         android:text="СЛИЧНИ ВЕСТИ"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/colorSecondary"/>
-
-    <TextView
-        android:id="@+id/textViewSourceUrl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="motika.com.mk"
-        android:layout_below="@+id/imgCluster"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/txtDescription"
         android:textColor="@color/blue"/>
+
+
 
 
 </RelativeLayout>

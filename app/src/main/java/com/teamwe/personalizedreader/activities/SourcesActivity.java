@@ -89,6 +89,7 @@ public class SourcesActivity extends AppCompatActivity {
 
     private void configureListView() {
         listViewSources = (ListView)findViewById(R.id.listSources);
+        listViewSources.setDivider(null);
     }
 
     private void configureSwipeView() {

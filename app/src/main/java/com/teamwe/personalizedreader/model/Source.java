@@ -8,12 +8,19 @@ public class Source implements Parcelable {
 
     private int id;
     private String url;
+    private String name;
     private boolean isChecked;
+
+    // usually the favicon of the web page
+    private String imgUrl;
 
     public Source(Parcel input){
 
         id = input.readInt();
         url = input.readString();
+        name = input.readString();
+        isChecked = (input.readInt() == 1);
+        imgUrl = input.readString();
     }
 
     @Override
@@ -25,6 +32,9 @@ public class Source implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(url);
+        dest.writeString(name);
+        dest.writeInt(isChecked?1:0);
+        dest.writeString(imgUrl);
     }
 
     @SuppressWarnings("unused")
@@ -97,5 +107,24 @@ public class Source implements Parcelable {
 
     public void setIsChecked(boolean isChecked) {
         this.isChecked = isChecked;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getName() {
+        if(name == null || name.length() == 0) {
+            return this.getPrettyUrl();
+        }
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

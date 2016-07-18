@@ -10,6 +10,7 @@ import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.ClusterWrapper;
 import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.model.NewsPost;
+import com.teamwe.personalizedreader.model.Source;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,13 +26,13 @@ import java.util.Set;
 
 public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
     private static final String TAG = "GetNews";
-    private final Set<String> wanted;
+    private final List<Source> selectedSources;
     OnNewsHere listener;
 
 
-    public GetNewsTask(OnNewsHere listener, Set<String> wanted) {
+    public GetNewsTask(OnNewsHere listener, List<Source> selectedSources) {
         this.listener = listener;
-        this.wanted = wanted;
+        this.selectedSources = selectedSources;
     }
     @Override
     public List<Cluster> doInBackground(Category ... params) {
@@ -41,8 +42,8 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
         Category category= params[0];
         try {
             StringBuilder sb = new StringBuilder();
-            for (String s:wanted){
-                sb.append(s+",");
+            for (Source s : selectedSources){
+                sb.append(s.getId()+",");
             }
 
             String wantedSources = "";
@@ -50,8 +51,9 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
                 wantedSources = sb.toString().substring(0, sb.length() - 1);
             }
 
-            String query = String.format("http://%s/get_filtered_clusters?category=%s&wantedSources=%s", GlobalInfo.SERVER_IP,
-                    category.getName(), wantedSources);
+
+            // needs working about the categories
+            String query = String.format("%s/read_clusters?format=json", GlobalInfo.SERVER_IP);
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
@@ -78,28 +80,6 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
             ClusterWrapper wrapper  = gson.fromJson(sb.toString(),ClusterWrapper.class);
             clusters = wrapper.listClusters;
-
-
-            for(Cluster c : clusters) {
-                for(NewsPost np : c.listNews) {
-                    if(np.pubDate == 0) {
-                        np.pubDate = System.currentTimeMillis() - GlobalInfo.rg.nextInt(10)*60*60*1000;
-                    }
-                }
-            }
-
-
-            for(int i=0; i<clusters.size(); i++) {
-                for(int j=1+i; j<clusters.size(); j++) {
-                    if(clusters.get(i).listNews.size() < clusters.get(j).listNews.size()) {
-
-                        Cluster temp = clusters.get(i);
-                        clusters.set(i, clusters.get(j));
-                        clusters.set(j, temp);
-                    }
-                }
-            }
-
             Log.i(TAG, " Uspeshna konverzija. clusters.size() = " + clusters.size());
 
         }catch(UnsupportedEncodingException e) {
@@ -125,10 +105,6 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
     @Override
     public void onPostExecute(List<Cluster> clusters) {
-        if (clusters!=null) {
-            listener.onTaskCompleted(clusters);
-        } else {
-            Log.i(TAG, "onPostExecute: clusters are null SOMETHING IS WRONG!!!!");
-        }
+        listener.onTaskCompleted(clusters);
     }
 }

@@ -188,14 +188,19 @@ public class AlternativeMain extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                int sz_1 = adapterCategories.getData().size() + 1;
+                int sz_1 = adapterCategories.getCount() + 1;
                 int sz_2 = adjustmentAdapter.getCount() + 1;
 
 
                 if (position < sz_1) {
 
                     int relativePosition = position - 1;
-                    Category cat = adapterCategories.getData().get(relativePosition);
+                    Category cat = null;
+                    if(relativePosition == 0) {
+                        cat = new Category(-1, "Trending", "Најнови");
+                    } else {
+                        cat = adapterCategories.getData().get(relativePosition-1);
+                    }
 
                     currentCategory = cat;
                     currentSource = null;
@@ -224,7 +229,7 @@ public class AlternativeMain extends AppCompatActivity
                     currentSource = source;
                     currentCategory = null;
 
-                    act.setTitle(currentSource.getPrettyUrl());
+                    act.setTitle(currentSource.getName());
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
 
@@ -383,7 +388,15 @@ public class AlternativeMain extends AppCompatActivity
 
         final Activity act = this;
 
-        Set<String> someSources = GlobalInfo.SOME_SOURCES;
+        SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+
+        String gsonList =  preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        Gson gson = new Gson();
+
+        Type typeToken = new TypeToken<List<Source>>() {}.getType();
+
+        List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
+
 
         GetNewsTask task = new GetNewsTask(new OnNewsHere() {
             @Override
@@ -402,7 +415,7 @@ public class AlternativeMain extends AppCompatActivity
                     });
                 }
             }
-        }, someSources);
+        }, selectedSources);
 
         task.execute(currentCategory);
 

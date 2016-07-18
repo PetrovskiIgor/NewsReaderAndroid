@@ -63,40 +63,48 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
     public int getCount() {
         if(null == data) return 0;
 
+        if(inNavigationDrawer) {
+            return 1 + data.size(); // Најнови
+        }
         return data.size();
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
 
-
-        Category currCat = data.get(position);
-
         Log.i(TAG, "position: " + position);
         convertView = LayoutInflater.from(context).inflate(R.layout.view_category, viewGroup, false);
         Log.i(TAG, "convertView: " + convertView);
 
-        TextView txtCategory = (TextView)convertView.findViewById(R.id.txtCategory);
+        TextView txtCategory = (TextView) convertView.findViewById(R.id.txtCategory);
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.cbCategory);
-        ImageView imgCategory = (ImageView)convertView.findViewById(R.id.imgCategory);
+        ImageView imgCategory = (ImageView) convertView.findViewById(R.id.imgCategory);
 
-        if(currCat.getImgUrl() != null && currCat.getImgUrl().length() > 0)
-            Picasso.with(context).load(currCat.getImgUrl()).into(imgCategory);
+        final int pos = inNavigationDrawer?(position-1):position;
+        if(inNavigationDrawer && position == 0) {
+            txtCategory.setText(context.getResources().getString(R.string.trending_news));
+        } else {
 
+            Category currCat = data.get(pos);
+            if (currCat.getImgUrl() != null && currCat.getImgUrl().length() > 0)
+                Picasso.with(context).load(currCat.getImgUrl()).into(imgCategory);
+
+            txtCategory.setText(data.get(pos).getTitle());
+
+
+        }
 
         if (!inNavigationDrawer) {
-            txtCategory.setText(data.get(position).getTitle());
-            checkBox.setChecked(data.get(position).getCheckedState());
+
+            checkBox.setChecked(data.get(pos).getCheckedState());
 
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean ic) {
-                    data.get(position).setCheckedState(ic);
+                    data.get(pos).setCheckedState(ic);
                 }
             });
         } else {
-            txtCategory.setText(data.get(position).getTitle());
-           // txtCategory.setTextAppearance(context,android.R.style.TextAppearance_Small);
             checkBox.setVisibility(View.GONE);
         }
 

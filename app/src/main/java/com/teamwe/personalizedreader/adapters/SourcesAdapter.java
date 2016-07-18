@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.mynews.R;
 
@@ -55,13 +57,21 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
         convertView = LayoutInflater.from(context).inflate(R.layout.view_source, viewGroup, false);
 
+        Source currSource = data.get(position);
+
         TextView txtSource = (TextView)convertView.findViewById(R.id.txtSource);
         CheckBox cbSource = (CheckBox)convertView.findViewById(R.id.cbSource);
 
+        ImageView imgCategory = (ImageView)convertView.findViewById(R.id.imgSource);
 
-        Source currSource = data.get(position);
+        if(currSource.getImgUrl() != null && currSource.getImgUrl().length() > 0)
+            Picasso.with(context).load(currSource.getImgUrl()).into(imgCategory);
+        // maybe we need to load the static image again in an else statement
 
-        txtSource.setText(currSource.getPrettyUrl());
+
+
+
+        txtSource.setText(currSource.getName());
 
 
         if(!inNavigationDrawer) {

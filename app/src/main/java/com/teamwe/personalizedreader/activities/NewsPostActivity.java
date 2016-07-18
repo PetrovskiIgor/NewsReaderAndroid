@@ -73,6 +73,10 @@ public class NewsPostActivity extends AppCompatActivity {
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setDisplayZoomControls(false);
 
+
+        // so that the user can watch videos
+        webview.getSettings().setJavaScriptEnabled(true);
+
         // CELA SLIKA NA EKRAN..
 
         // MOZHEBI E LOSHO ?!

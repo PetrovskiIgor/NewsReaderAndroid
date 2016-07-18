@@ -37,8 +37,7 @@ public class CategoriesTask extends AsyncTask<Void, Void, List<Category>> {
 
         List<Category> categories = null;
         try {
-            // http://192.168.0.102:8083/
-            String query = String.format("http://%s/get_categories", GlobalInfo.SERVER_IP);
+            String query = String.format("%sget_categories?format=json", GlobalInfo.SERVER_IP);
             Log.i(TAG, func_tag + "query: " + query);
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
@@ -67,7 +66,6 @@ public class CategoriesTask extends AsyncTask<Void, Void, List<Category>> {
 
             categories = gson.fromJson(sb.toString(), typeToken);
 
-
             Log.i(TAG, " Uspeshna konverzija. categories.size() = " + categories.size());
 
         }catch(UnsupportedEncodingException e) {
@@ -93,10 +91,6 @@ public class CategoriesTask extends AsyncTask<Void, Void, List<Category>> {
 
     @Override
     public void onPostExecute(List<Category> categories) {
-        if (categories !=null) {
-            listener.onTaskCompleted(categories);
-        } else {
-            Log.i(TAG, "onPostExecute: categories are null SOMETHING IS WRONG!!!!");
-        }
+        listener.onTaskCompleted(categories);
     }
 }

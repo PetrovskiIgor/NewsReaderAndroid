@@ -37,7 +37,7 @@ public class SourcesTask extends AsyncTask<Void, Void, List<Source>> {
 
         List<Source> sources = null;
         try {
-            String query = String.format("http://%s/get_sources", GlobalInfo.SERVER_IP);
+            String query = String.format("%sget_sources?format=json", GlobalInfo.SERVER_IP);
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
@@ -92,10 +92,6 @@ public class SourcesTask extends AsyncTask<Void, Void, List<Source>> {
 
     @Override
     public void onPostExecute(List<Source> sources) {
-        if (sources !=null) {
-            listener.onTaskCompleted(sources);
-        } else {
-            Log.i(TAG, "onPostExecute: sources are null SOMETHING IS WRONG!!!!");
-        }
+        listener.onTaskCompleted(sources);
     }
 }

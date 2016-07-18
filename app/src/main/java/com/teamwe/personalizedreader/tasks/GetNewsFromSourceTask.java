@@ -49,7 +49,7 @@ public class GetNewsFromSourceTask extends AsyncTask<Source, Void, List<NewsPost
         try {
 
 
-            String query = String.format("http://%s/get_by_page_json?page_url=%s", GlobalInfo.SERVER_IP, source.getUrl());
+            String query = String.format("%sget_news_from_page?source_id=%d&format=json", GlobalInfo.SERVER_IP, source.getId());
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 
@@ -103,11 +103,7 @@ public class GetNewsFromSourceTask extends AsyncTask<Source, Void, List<NewsPost
 
     @Override
     public void onPostExecute(List<NewsPost> newsPosts) {
-        if (newsPosts !=null) {
-            listener.onTaskCompleted(newsPosts);
-        } else {
-            Log.i(TAG, "onPostExecute: newsPosts are null SOMETHING IS WRONG!!!!");
-        }
+        listener.onTaskCompleted(newsPosts);
     }
 }
 

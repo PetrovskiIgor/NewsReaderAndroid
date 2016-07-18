@@ -42,6 +42,7 @@ public class NewsPost implements Parcelable {
         source_url = input.readString();
         img_url = input.readString();
         description = input.readString();
+        pubDate = input.readLong();
 
 
     }
@@ -66,7 +67,7 @@ public class NewsPost implements Parcelable {
         dest.writeString(source_url);
         dest.writeString(img_url);
         dest.writeString(description);
-
+        dest.writeLong(pubDate);
     }
 
     @SuppressWarnings("unused")

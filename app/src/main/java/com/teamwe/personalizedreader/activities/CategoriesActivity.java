@@ -254,6 +254,24 @@ public class CategoriesActivity extends AppCompatActivity {
         String func_tag = "showCategories(): ";
         Log.i(TAG, func_tag + "callFromMainActivity? " + callFromMainActivity);
 
+        if (swipeView.isRefreshing()) {
+            Log.i(TAG, func_tag + "The swipe view is refreshing, so let's post a runnable to stop refreshing");
+
+            swipeView.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeView.setRefreshing(false);
+                }
+            });
+        } else {
+            Log.i(TAG, func_tag + "Strangely, the swipe view is not refreshing.");
+        }
+
+        if(null == data) {
+            Toast.makeText(this, "Обидете се повторно.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
         String gsonList =  preferences.getString(GlobalInfo.SELECTED_CATEGORIES, "");
@@ -296,18 +314,7 @@ public class CategoriesActivity extends AppCompatActivity {
         listViewCategories.setAdapter(adapter);
 
         Log.i(TAG, func_tag + "Connected the adapter with the listview.");
-        if (swipeView.isRefreshing()) {
-            Log.i(TAG, func_tag + "The swipe view is refreshing, so let's post a runnable to stop refreshing");
 
-            swipeView.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeView.setRefreshing(false);
-                }
-            });
-        } else {
-            Log.i(TAG, func_tag + "Strangely, the swipe view is not refreshing.");
-        }
 
     }
 

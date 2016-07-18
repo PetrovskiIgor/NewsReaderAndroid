@@ -249,6 +249,24 @@ public class SourcesActivity extends AppCompatActivity {
 
         String func_tag = "showSources(): ";
 
+        if (swipeView.isRefreshing()) {
+            Log.i(TAG, func_tag + "The swipe view is refreshing, so let's post a runnable to stop refreshing");
+
+            swipeView.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeView.setRefreshing(false);
+                }
+            });
+        } else {
+            Log.i(TAG, func_tag + "Strangely, the swipe view is not refreshing.");
+        }
+
+        if(null == data) {
+            Toast.makeText(this, "Обидете се повторно.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
         String gsonList =  preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
@@ -287,18 +305,7 @@ public class SourcesActivity extends AppCompatActivity {
         adapter = new SourcesAdapter(this, 0, data);
         listViewSources.setAdapter(adapter);
 
-        if (swipeView.isRefreshing()) {
-            Log.i(TAG, func_tag + "The swipe view is refreshing, so let's post a runnable to stop refreshing");
 
-            swipeView.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeView.setRefreshing(false);
-                }
-            });
-        } else {
-            Log.i(TAG, func_tag + "Strangely, the swipe view is not refreshing.");
-        }
     }
 
 

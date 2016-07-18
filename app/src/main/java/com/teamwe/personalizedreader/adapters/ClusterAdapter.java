@@ -3,6 +3,7 @@ package com.teamwe.personalizedreader.adapters;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -139,11 +140,12 @@ public class ClusterAdapter extends BaseAdapter {
                         /*
                         da se pushti id-to na cluster-ot
                          */
-                        ArrayList<NewsPost> similarNewsPosts = (ArrayList<NewsPost>)cluster.listNews;
+                        ArrayList<NewsPost> similarNewsPosts = (ArrayList<NewsPost>) cluster.listNews;
                         intent.putParcelableArrayListExtra(GlobalInfo.LIST_NEWS, similarNewsPosts);
                         activity.startActivity(intent);
                     }
                 });
+                holder.textViewNumPosts.setPaintFlags(holder.textViewNumPosts.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
             else{
                 holder.textViewNumPosts.setVisibility(View.GONE);

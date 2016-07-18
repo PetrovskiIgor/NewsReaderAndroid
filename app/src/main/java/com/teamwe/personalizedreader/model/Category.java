@@ -14,20 +14,13 @@ public class Category implements Parcelable {
     private String imgUrl;
     private boolean checkedState;
 
-    public static HashMap<String, String> NAME_TO_TITLE = new HashMap<String, String>(){{
-        put("MAKEDONIJA", "Македонија");
-        put("ZDRAVJE", "Здравје");
-        put("ZIVOT", "Живот");
-        put("TENIS", "Тенис");
-        put("SVET", "Свет");
-        put("SCENA", "Сцена");
-        put("KOSARKA", "Кошарка");
-        put("KULTURA", "Култура");
-        put("EKONOMIJA", "Економија");
-        put("RAKOMET", "Ракомет");
-        put("FUDBAL", "Фудбал");
-        put("TEHNOLOGIJA", "Технологија");
-    }};
+
+
+    public Category(int id, String name, String title) {
+        this.id = id;
+        this.name = name;
+        this.title = title;
+    }
 
     public Category(String name, String title) {
         this.name = name;
@@ -88,7 +81,8 @@ public class Category implements Parcelable {
     }
 
     public String getTitle() {
-        return NAME_TO_TITLE.get(name);
+        //return NAME_TO_TITLE.get(name);
+        return title;
     }
 
     public void setTitle(String title) {

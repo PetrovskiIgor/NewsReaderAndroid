@@ -159,31 +159,6 @@ public class NewsPostsAdapter extends BaseAdapter {
 
     }
 
-    public void startDialog(Cluster cluster){
-
-        if (cluster.listNews.size()==1){
-            startIntent(cluster.listNews.get(0));
-            return;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        final String [] arr = new String[cluster.listNews.size()];
-        final HashMap<String, NewsPost> hostPageVsPost = new HashMap<String, NewsPost> ();
-        for (int i=0;i<arr.length;i++){
-            arr[i]=cluster.listNews.get(i).getSource_url();
-            hostPageVsPost.put(arr[i],cluster.listNews.get(i));
-        }
-        builder.setTitle(R.string.pick_news).setItems(arr, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                String hostPage = arr[which];
-                NewsPost post = hostPageVsPost.get(hostPage);
-                startIntent(post);
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
 
 

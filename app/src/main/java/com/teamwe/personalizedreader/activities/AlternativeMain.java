@@ -67,11 +67,7 @@ public class AlternativeMain extends AppCompatActivity
     private RelativeLayout layoutNoInternet;
 
     // the news of the current category that is shown to the user
-
-    // DEFAULT-noto nema da bide ova!!!
-    private Category currentCategory = new Category("MAKEDONIJA", "Македонија");
-
-
+    private Category currentCategory;
     private Source currentSource;
 
     // the adapter for the listview
@@ -122,6 +118,9 @@ public class AlternativeMain extends AppCompatActivity
 
         configureListView();
         configureSwipeView();
+        currentCategory = new Category(-1, "Trending", "Најнови");
+        this.setTitle(currentCategory.getTitle());
+
         loadNews();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -197,7 +196,7 @@ public class AlternativeMain extends AppCompatActivity
                     int relativePosition = position - 1;
                     Category cat = null;
                     if(relativePosition == 0) {
-                        cat = new Category(-1, "Trending", "Најнови");
+                        cat = new Category(-1, "Trending", "Топ Вести");
                     } else {
                         cat = adapterCategories.getData().get(relativePosition-1);
                     }
@@ -290,7 +289,11 @@ public class AlternativeMain extends AppCompatActivity
             @Override
             public void onRefresh() {
                 swipeView.setRefreshing(true);
-                loadNews();
+
+                if(currentCategory != null)
+                    loadNews();
+                else
+                    loadNewsFromSource();
             }
         });
 
@@ -460,29 +463,6 @@ public class AlternativeMain extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            currentCategory = new Category("MAKEDONIJA", "Македонија");
-        } else if (id == R.id.nav_gallery) {
-            currentCategory = new Category("EKONOMIJA", "Економија");
-
-        } else if (id == R.id.nav_slideshow) {
-            currentCategory = new Category("SVET", "Свет");
-
-        } else if (id == R.id.nav_manage) {
-            currentCategory = new Category("KULTURA", "Култура");
-
-        } else if (id == R.id.nav_share) {
-            currentCategory = new Category("ZABAVA", "Забава");
-
-        } else if (id == R.id.nav_send) {
-            currentCategory = new Category("NASTANI", "Настани");
-
-        } else {
-            currentCategory = new Category("MAKEDONIJA", "Македонија");
-        }
 
         this.setTitle(currentCategory.getTitle());
 

@@ -15,5 +15,8 @@
     <dimen name="img_category_width">30dp</dimen>
     <dimen name="btn_next_width"> 33dp </dimen>
     <dimen name="btn_next_margin_right"> 10dp </dimen>
-    <dimen name="margin_left_title_from_img">10dp</dimen>
+    <dimen name="margin_left_title_from_img">5dp</dimen>
+    <dimen name="img_cluster_width">80dp</dimen>
+    <dimen name="img_cluster_height">100dp</dimen>
+    <dimen name="title_text_size">16sp</dimen>
 </resources>

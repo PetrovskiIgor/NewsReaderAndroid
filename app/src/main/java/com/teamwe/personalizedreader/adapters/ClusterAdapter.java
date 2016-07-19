@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -91,8 +92,26 @@ public class ClusterAdapter extends BaseAdapter {
 
         if (cluster!=null){
             holder.position=position;
-            String title = cluster.listNews.get(0).title;
-            String imgUrl = cluster.listNews.get(0).img_url;
+
+            NewsPost firstNews = cluster.listNews.get(0);
+
+            if(position < 5) {
+                WebView webView  = new WebView(activity);
+                webView.loadUrl(firstNews.url);
+            }
+
+            String title = firstNews.title;
+            String imgUrl = "";
+
+            for(NewsPost np : cluster.listNews) {
+
+                if(np.img_url != null && np.img_url.length() > 0 && np.img_url.startsWith("http")) {
+                    imgUrl = np.img_url;
+                    break;
+                }
+            }
+
+
             String sourceUrl = cluster.listNews.get(0).source_url;
             long pubDate = cluster.listNews.get(0).pubDate;
             String description = cluster.listNews.get(0).description;
@@ -129,23 +148,25 @@ public class ClusterAdapter extends BaseAdapter {
 
             int numTexts = cluster.listNews.size();
             if (numTexts>1){
-                String finalText = String.format("%d %s", numTexts-1, ((numTexts-1) > 1 )? "СЛИЧНИ ВЕСТИ":"СЛИЧНА ВЕСТ");
+                String finalText = String.format("%d %s", numTexts,"вести");
                 holder.textViewNumPosts.setText(finalText);
 
                 holder.textViewNumPosts.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(activity, SimilarNewsActivity.class);
-                        /*
-                        da se pushti id-to na cluster-ot
-                         */
-                        ArrayList<NewsPost> similarNewsPosts = (ArrayList<NewsPost>) cluster.listNews;
-                        intent.putParcelableArrayListExtra(GlobalInfo.LIST_NEWS, similarNewsPosts);
-                        activity.startActivity(intent);
+                        showSimilarNews(cluster.listNews);
+
                     }
                 });
-                holder.textViewNumPosts.setPaintFlags(holder.textViewNumPosts.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+                holder.imgViewPhoto.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        showSimilarNews(cluster.listNews);
+                    }
+                });
+                //holder.textViewNumPosts.setPaintFlags(holder.textViewNumPosts.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
             else{
                 holder.textViewNumPosts.setVisibility(View.GONE);
@@ -162,19 +183,19 @@ public class ClusterAdapter extends BaseAdapter {
 
                     @Override
                     public void onError() {
-                        putRandomPhotoTo(holder.imgViewPhoto);
+                        //putRandomPhotoTo(holder.imgViewPhoto);
                     }
                 });
             }
             else{
-                putRandomPhotoTo(holder.imgViewPhoto);
+                //putRandomPhotoTo(holder.imgViewPhoto);
             }
         }
 
         return convertView;
     }
 
-    private void putRandomPhotoTo(ImageView imgViewPhoto) {
+    /*private void putRandomPhotoTo(ImageView imgViewPhoto) {
         Random r = new Random();
         int k = r.nextInt(8)+1;
         if (k==1) Picasso.with(activity).load(R.drawable.first).into(imgViewPhoto);
@@ -186,7 +207,7 @@ public class ClusterAdapter extends BaseAdapter {
         if (k==7) Picasso.with(activity).load(R.drawable.seventh).into(imgViewPhoto);
         if (k==8) Picasso.with(activity).load(R.drawable.eight).into(imgViewPhoto);
         
-    }
+    }*/
 
     public void startDialog(Cluster cluster){
 
@@ -231,5 +252,15 @@ public class ClusterAdapter extends BaseAdapter {
         TextView txtPubDate;
         ImageView imgViewPhoto;
         int position;
+    }
+
+    private void showSimilarNews(List<NewsPost> newsPosts) {
+        Intent intent = new Intent(activity, SimilarNewsActivity.class);
+                        /*
+                        da se pushti id-to na cluster-ot
+                         */
+        ArrayList<NewsPost> similarNewsPosts = (ArrayList<NewsPost>) newsPosts;
+        intent.putParcelableArrayListExtra(GlobalInfo.LIST_NEWS, similarNewsPosts);
+        activity.startActivity(intent);
     }
 }

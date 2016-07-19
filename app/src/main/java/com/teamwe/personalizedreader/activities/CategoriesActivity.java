@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -320,9 +321,13 @@ public class CategoriesActivity extends AppCompatActivity {
 
 
     private void colorAboveTheToolbar() {
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.primaryColorDark));
+
+        if(Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.primaryColorDark));
+        }
+
     }
 }

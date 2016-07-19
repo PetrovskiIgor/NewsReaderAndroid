@@ -133,18 +133,18 @@ public class NewsPostsAdapter extends BaseAdapter {
 
                     @Override
                     public void onError() {
-                        putRandomPhotoTo(holder.imgViewPhoto);
+                        //putRandomPhotoTo(holder.imgViewPhoto);
                     }
                 });
             }
             else{
-                putRandomPhotoTo(holder.imgViewPhoto);
+                //putRandomPhotoTo(holder.imgViewPhoto);
             }
         }
 
         return convertView;
     }
-
+/*
     private void putRandomPhotoTo(ImageView imgViewPhoto) {
         Random r = new Random();
         int k = r.nextInt(8)+1;
@@ -157,7 +157,7 @@ public class NewsPostsAdapter extends BaseAdapter {
         if (k==7) Picasso.with(activity).load(R.drawable.seventh).into(imgViewPhoto);
         if (k==8) Picasso.with(activity).load(R.drawable.eight).into(imgViewPhoto);
 
-    }
+    }*/
 
 
 

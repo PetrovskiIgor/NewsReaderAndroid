@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
@@ -16,28 +20,28 @@ import com.teamwe.personalizedreader.mynews.R;
 public class NewsPostActivity extends AppCompatActivity {
 
 
+    public static String TAG = "NewsPostActivity";
+
     private String url;
     private String title;
 
     boolean loadingFinished = true;
     boolean redirect = false;
     WebView webview;
+    ProgressBar progressBar;
 
     private SwipeRefreshLayout swipeView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().requestFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_news_post);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        swipeView = (SwipeRefreshLayout)findViewById(R.id.swipeViewNewsPost);
+       /* swipeView = (SwipeRefreshLayout)findViewById(R.id.swipeViewNewsPost);
 
         swipeView.setRefreshing(true);
-        /*swipeView.post(new Runnable() {
+        swipeView.post(new Runnable() {
             @Override
             public void run() {
                 swipeView.setRefreshing(true);
@@ -48,42 +52,12 @@ public class NewsPostActivity extends AppCompatActivity {
         url = intent.getStringExtra(GlobalInfo.NEWS_URL);
         title = intent.getStringExtra(GlobalInfo.NEWS_TITLE);
         setTitle(title);
-        webview = new WebView(this);
-        setContentView(webview);
+        webview = (WebView)findViewById(R.id.webView);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(0);
 
-
-        final Activity act = this;
-
-        webview.setWebViewClient(new WebViewClient() {
-
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                /*swipeView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeView.setRefreshing(false);
-                    }
-                });*/
-
-            }
-
-        });
-
-        webview.getSettings().setBuiltInZoomControls(true);
-        webview.getSettings().setDisplayZoomControls(false);
-
-
-        // so that the user can watch videos
-        webview.getSettings().setJavaScriptEnabled(true);
-
-        // CELA SLIKA NA EKRAN..
-
-        // MOZHEBI E LOSHO ?!
-       /* webview.getSettings().setLoadWithOverviewMode(true);
-        webview.getSettings().setUseWideViewPort(true);*/
-
-        webview.loadUrl(url);
+        configureWebView();
     }
 
 
@@ -101,6 +75,29 @@ public class NewsPostActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void configureWebView() {
+        webview.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                //Make the bar disappear after URL is loaded, and changes string to Loading...
+
+                progressBar.setProgress(progress); //Make the bar disappear after URL is loaded
+                Log.i(TAG, "progress: " + progress);
+
+                if (progress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                }
+                // Return the app name after finish loadin
+            }
+        });
+
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setBuiltInZoomControls(true);
+        webview.getSettings().setDisplayZoomControls(false);
+        webview.setWebViewClient(new WebViewClient());
+        webview.loadUrl(url);
     }
 
 }

@@ -19,4 +19,7 @@
     <dimen name="img_cluster_width">80dp</dimen>
     <dimen name="img_cluster_height">100dp</dimen>
     <dimen name="title_text_size">16sp</dimen>
+    <dimen name="title_category_size">17sp</dimen>
+    <dimen name="margin_left_nav_headers">10dp</dimen>
+    <dimen name="margin_top_nav_headers">3dp</dimen>
 </resources>

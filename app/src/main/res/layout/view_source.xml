@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/sysWhite"
     >
 
     <ImageView
@@ -24,7 +25,7 @@
         android:layout_marginBottom="@dimen/margin_item_large"
         android:layout_centerVertical="true"
         android:text="http://somesource.com"
-        android:textAppearance="?android:textAppearanceMedium"
+        android:textSize="@dimen/title_category_size"
         android:layout_toRightOf="@+id/imgSource"/>
 
 

@@ -53,7 +53,7 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
 
             // needs working about the categories
-            String query = String.format("%s/read_clusters?format=json", GlobalInfo.SERVER_IP);
+            String query = String.format("%s/read_clusters?format=json&how_much=50", GlobalInfo.SERVER_IP);
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 
@@ -23,10 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 
@@ -53,9 +50,7 @@ import com.teamwe.personalizedreader.tasks.OnNewsFromSourceHere;
 import com.teamwe.personalizedreader.tasks.OnNewsHere;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class AlternativeMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -118,7 +113,7 @@ public class AlternativeMain extends AppCompatActivity
 
         configureListView();
         configureSwipeView();
-        currentCategory = new Category(-1, "Trending", "Најнови");
+        currentCategory = new Category(-1, "Trending", getResources().getString(R.string.trending_news));
         this.setTitle(currentCategory.getTitle());
 
         loadNews();
@@ -196,7 +191,7 @@ public class AlternativeMain extends AppCompatActivity
                     int relativePosition = position - 1;
                     Category cat = null;
                     if(relativePosition == 0) {
-                        cat = new Category(-1, "Trending", "Топ Вести");
+                        cat = new Category(-1, "Trending", getResources().getString(R.string.trending_news));
                     } else {
                         cat = adapterCategories.getData().get(relativePosition-1);
                     }

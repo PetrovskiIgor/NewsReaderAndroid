@@ -39,7 +39,7 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
 
         List<Cluster> clusters = null;
-        Category category= params[0];
+        Category category = params[0];
         try {
             StringBuilder sb = new StringBuilder();
             for (Source s : selectedSources){
@@ -54,6 +54,12 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
             // needs working about the categories
             String query = String.format("%s/read_clusters?format=json&how_much=50", GlobalInfo.SERVER_IP);
+
+            // if we have picked a specific category (not top news)
+            if(category.getId() >= 0) {
+                query += String.format("&category_id=%d", category.getId());
+            }
+
 
             Log.i(TAG, "doInBackground: Sostaveno query: " + query);
 

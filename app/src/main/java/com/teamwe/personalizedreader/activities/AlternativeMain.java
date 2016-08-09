@@ -80,11 +80,6 @@ public class AlternativeMain extends AppCompatActivity
     private NavigationView navigationView;
 
 
-    private ListView listViewCategories;
-
-    private ListView listViewSources;
-
-
     private ListView listViewNV;
 
 
@@ -149,20 +144,12 @@ public class AlternativeMain extends AppCompatActivity
         final SourcesAdapter sourcesAdapter = new SourcesAdapter(this, 0, selectedSources, true);
         // --- loaded the sources --
 
-        final AdjustmentAdapter adjustmentAdapter = new AdjustmentAdapter(this, 0);
-
-
         final MergeAdapter mergeAdapter = new MergeAdapter();
 
         // categories
         View headerCategories = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_categories, null);
         mergeAdapter.addView(headerCategories);
         mergeAdapter.addAdapter(adapterCategories);
-
-        //adjustments
-        View headerAdjustments = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_adjustments,null);
-        mergeAdapter.addView(headerAdjustments);
-        mergeAdapter.addAdapter(adjustmentAdapter);
 
         // sources
         View headerSources = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_sources,null);
@@ -183,9 +170,6 @@ public class AlternativeMain extends AppCompatActivity
 
 
                 int sz_1 = adapterCategories.getCount() + 1;
-                int sz_2 = adjustmentAdapter.getCount() + 1;
-
-
                 if (position < sz_1) {
 
                     int relativePosition = position - 1;
@@ -205,17 +189,8 @@ public class AlternativeMain extends AppCompatActivity
 
                     loadNews();
                     //Toast.makeText(act, cat.getTitle(), Toast.LENGTH_SHORT).show();
-                } else if (position < sz_1 + sz_2) {
+                }  else {
                     int relativePosition = position - sz_1 - 1;
-                    if (relativePosition == 0) {
-                        Toast.makeText(act, "Мои теми", Toast.LENGTH_SHORT).show();
-                    } else if (relativePosition == 1) {
-                        Toast.makeText(act, "Мои извори", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(act, "Relative position isn't 0 nor 1. Something is wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int relativePosition = position - sz_1 - sz_2 - 1;
 
                     Source source = sourcesAdapter.getData().get(relativePosition);
                     //Toast.makeText(act, source.getPrettyUrl(), Toast.LENGTH_SHORT).show();

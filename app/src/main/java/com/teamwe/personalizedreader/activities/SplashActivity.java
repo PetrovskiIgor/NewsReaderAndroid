@@ -15,6 +15,10 @@ public class SplashActivity extends AppCompatActivity {
 
     private static String TAG = "SplashActivity";
 
+
+
+    private Object lock = new Object();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +30,9 @@ public class SplashActivity extends AppCompatActivity {
 
 
         if (answer==false){
-
             new WaitingTask().execute();
             putInPreferences();
-        }else{
+        }else {
             callMainActivity();
         }
 

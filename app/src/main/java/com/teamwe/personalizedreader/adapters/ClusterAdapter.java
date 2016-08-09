@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.teamwe.personalizedreader.activities.NewsPostActivity;
 import com.teamwe.personalizedreader.activities.SimilarNewsActivity;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
@@ -150,8 +151,9 @@ public class ClusterAdapter extends BaseAdapter {
             holder.txtSourceUrl.setText(sourceUrl);
             holder.textViewTitle.setText(title);
 
-            int numTexts = cluster.listNews.size();
+            int numTexts = cluster.numNews;
             if (numTexts>1){
+                holder.textViewNumPosts.setVisibility(View.VISIBLE);
                 String finalText = String.format("%d %s", numTexts,"вести");
                 holder.textViewNumPosts.setText(finalText);
 
@@ -171,9 +173,15 @@ public class ClusterAdapter extends BaseAdapter {
                     }
                 });
                 //holder.textViewNumPosts.setPaintFlags(holder.textViewNumPosts.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            }
-            else{
+            } else{
                 holder.textViewNumPosts.setVisibility(View.GONE);
+                holder.imgViewPhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NewsPost onlyNewsPost = cluster.listNews.get(0);
+                        showNewsPost(onlyNewsPost);
+                    }
+                });
                 //holder.textViewNumPosts.setText("");
 
             }
@@ -199,54 +207,7 @@ public class ClusterAdapter extends BaseAdapter {
         return convertView;
     }
 
-    /*private void putRandomPhotoTo(ImageView imgViewPhoto) {
-        Random r = new Random();
-        int k = r.nextInt(8)+1;
-        if (k==1) Picasso.with(activity).load(R.drawable.first).into(imgViewPhoto);
-        if (k==2) Picasso.with(activity).load(R.drawable.second).into(imgViewPhoto);
-        if (k==3) Picasso.with(activity).load(R.drawable.third).into(imgViewPhoto);
-        if (k==4) Picasso.with(activity).load(R.drawable.fourth).into(imgViewPhoto);
-        if (k==5) Picasso.with(activity).load(R.drawable.fifth).into(imgViewPhoto);
-        if (k==6) Picasso.with(activity).load(R.drawable.sixth).into(imgViewPhoto);
-        if (k==7) Picasso.with(activity).load(R.drawable.seventh).into(imgViewPhoto);
-        if (k==8) Picasso.with(activity).load(R.drawable.eight).into(imgViewPhoto);
-        
-    }*/
 
-    public void startDialog(Cluster cluster){
-
-        if (cluster.listNews.size()==1){
-            startIntent(cluster.listNews.get(0));
-            return;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        final String [] arr = new String[cluster.listNews.size()];
-        final HashMap<String, NewsPost> hostPageVsPost = new HashMap<String, NewsPost> ();
-        for (int i=0;i<arr.length;i++){
-            arr[i]=cluster.listNews.get(i).getSource_url();
-            hostPageVsPost.put(arr[i],cluster.listNews.get(i));
-        }
-        builder.setTitle(R.string.pick_news).setItems(arr, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                String hostPage = arr[which];
-                NewsPost post = hostPageVsPost.get(hostPage);
-                startIntent(post);
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-
-
-    private final void startIntent(NewsPost post){
-        String url = post.getUrl();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        activity.startActivity(intent);
-    }
 
     class ViewHolder{
         TextView textViewTitle;
@@ -265,6 +226,15 @@ public class ClusterAdapter extends BaseAdapter {
                          */
         ArrayList<NewsPost> similarNewsPosts = (ArrayList<NewsPost>) newsPosts;
         intent.putParcelableArrayListExtra(GlobalInfo.LIST_NEWS, similarNewsPosts);
+        activity.startActivity(intent);
+    }
+
+    private void showNewsPost(NewsPost newsPost) {
+        String url = newsPost.getUrl();
+
+        Intent intent = new Intent(activity, NewsPostActivity.class);
+        intent.putExtra(GlobalInfo.NEWS_URL, url);
+        intent.putExtra(GlobalInfo.NEWS_TITLE, newsPost.getTitle());
         activity.startActivity(intent);
     }
 }

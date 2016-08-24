@@ -99,6 +99,12 @@ public class CategoriesActivity extends AppCompatActivity {
         layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(null == adapter) {
+                    showToastForGoingTooEarly();
+                    return;
+                }
+
                 if (countSelectedCategories() >= 1) {
                     putSelectedCategoriesInSharedPreferences();
                     moveToNextActivity();
@@ -124,6 +130,10 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private void showToastForBadSpecification() {
         Toast.makeText(this, getResources().getString(R.string.warning_at_least_one_category), Toast.LENGTH_LONG).show();
+    }
+
+    private void showToastForGoingTooEarly() {
+        Toast.makeText(this, getResources().getString(R.string.going_too_early_categories), Toast.LENGTH_SHORT).show();
     }
 
     private int countSelectedCategories() {

@@ -51,6 +51,7 @@ public class SourcesActivity extends AppCompatActivity {
 
     // the layout, when clicked, brings us to the main activity
     private RelativeLayout layoutNext;
+    private boolean isPersonalized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class SourcesActivity extends AppCompatActivity {
         callFromMainActivity = intent.getBooleanExtra("callFromMainActivity", false);
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isPersonalized = sharedPreferences.getBoolean(GlobalInfo.PERSONALIZATION_STR, false);
+        isPersonalized = sharedPreferences.getBoolean(GlobalInfo.PERSONALIZATION_STR, false);
 
 
         if(!callFromMainActivity && isPersonalized) {
@@ -311,6 +312,12 @@ public class SourcesActivity extends AppCompatActivity {
 
 
     public void moveToNextActivity() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean(GlobalInfo.PERSONALIZATION_STR, true);
+        editor.commit();
+
         Intent intent = new Intent(this, AlternativeMain.class);
         startActivity(intent);
         this.finish();

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Мој Весник</string>
     <string name="action_settings">Settings</string>
+    <string name="categories_settings">Мои Теми</string>
+    <string name="sources_settings">Мои Извори</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

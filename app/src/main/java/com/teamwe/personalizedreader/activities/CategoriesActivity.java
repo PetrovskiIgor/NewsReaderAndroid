@@ -67,7 +67,7 @@ public class CategoriesActivity extends AppCompatActivity {
         boolean isPersonalized = sharedPreferences.getBoolean(GlobalInfo.PERSONALIZATION_STR, false);
 
         Intent intent = getIntent();
-        callFromMainActivity = intent.getBooleanExtra("callFromMainActivity", false);
+        callFromMainActivity = intent.getBooleanExtra(GlobalInfo.CALL_FROM_MAIN_ACTIVITY, false);
 
         // if yes, move to the sources activity, and then to the main activity
         if (!callFromMainActivity && isPersonalized) {
@@ -107,14 +107,21 @@ public class CategoriesActivity extends AppCompatActivity {
 
                 if (countSelectedCategories() >= 1) {
                     putSelectedCategoriesInSharedPreferences();
-                    moveToNextActivity();
+                    if(callFromMainActivity) {
+                        exitActivity();
+                    }else {
+                        moveToNextActivity();
+                    }
                 } else {
                     showToastForBadSpecification();
                 }
             }
         });
     }
-
+    private void exitActivity() {
+        Toast.makeText(this, "Успешно подесување на темите.", Toast.LENGTH_SHORT).show();
+        this.finish();
+    }
     private void configureListView() {
         listViewCategories = (ListView) findViewById(R.id.listCategories);
 
@@ -185,7 +192,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     public void moveToNextActivity() {
         Intent intent = new Intent(this, SourcesActivity.class);
-        intent.putExtra("callFromMainActivity", callFromMainActivity);
+        intent.putExtra(GlobalInfo.CALL_FROM_MAIN_ACTIVITY, callFromMainActivity);
         startActivity(intent);
         this.finish();
     }

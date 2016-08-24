@@ -82,6 +82,9 @@ public class AlternativeMain extends AppCompatActivity
 
     private ListView listViewNV;
 
+    private static final int REQUEST_CODE_CATEGORIES = 5;
+    private static final int REQUEST_CODE_SOURCES=7;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,7 +263,7 @@ public class AlternativeMain extends AppCompatActivity
             public void onRefresh() {
                 swipeView.setRefreshing(true);
 
-                if(currentCategory != null)
+                if (currentCategory != null)
                     loadNews();
                 else
                     loadNewsFromSource();
@@ -419,7 +422,11 @@ public class AlternativeMain extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.categories_settings) {
+            configureMyCategories();
+            return true;
+        } else if(id == R.id.sources_settings) {
+            configureMySources();
             return true;
         }
 
@@ -427,7 +434,26 @@ public class AlternativeMain extends AppCompatActivity
     }
 
 
+    private void configureMySources() {
+        Intent intent = new Intent(this, SourcesActivity.class);
+        intent.putExtra(GlobalInfo.CALL_FROM_MAIN_ACTIVITY, true);
+        this.startActivityForResult(intent, REQUEST_CODE_SOURCES);
+    }
 
+    private void configureMyCategories() {
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        intent.putExtra(GlobalInfo.CALL_FROM_MAIN_ACTIVITY, true);
+        this.startActivityForResult(intent, REQUEST_CODE_CATEGORIES);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_CATEGORIES || requestCode == REQUEST_CODE_SOURCES) {
+            // refresh the navigation view
+            populateNavigationView();
+        }
+
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

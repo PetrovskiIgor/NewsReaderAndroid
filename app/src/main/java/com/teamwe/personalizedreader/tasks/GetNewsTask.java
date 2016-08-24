@@ -53,7 +53,7 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
 
             // needs working about the categories
-            String query = String.format("%s/read_clusters?format=json&how_much=50", GlobalInfo.SERVER_IP);
+            String query = String.format("%sread_clusters?format=json&how_much=%d&selected_sources=%s", GlobalInfo.SERVER_IP, GlobalInfo.HOW_MUCH_TOP_NEWS,wantedSources);
 
             // if we have picked a specific category (not top news)
             if(category.getId() >= 0) {
@@ -113,4 +113,5 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
     public void onPostExecute(List<Cluster> clusters) {
         listener.onTaskCompleted(clusters);
     }
+
 }

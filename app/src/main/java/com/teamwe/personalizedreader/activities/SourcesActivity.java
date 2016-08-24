@@ -60,7 +60,7 @@ public class SourcesActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        callFromMainActivity = intent.getBooleanExtra("callFromMainActivity", false);
+        callFromMainActivity = intent.getBooleanExtra(GlobalInfo.CALL_FROM_MAIN_ACTIVITY, false);
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         isPersonalized = sharedPreferences.getBoolean(GlobalInfo.PERSONALIZATION_STR, false);
@@ -150,12 +150,22 @@ public class SourcesActivity extends AppCompatActivity {
                 }
                 if (countSelectedSources() >= 1) {
                     putSelectedSourcesInSharedPreferences();
-                    moveToNextActivity();
+
+                    if(callFromMainActivity) {
+                        exitActivity();
+                    } else {
+                        moveToNextActivity();
+                    }
                 } else {
                     showToastForBadSpecification();
                 }
             }
         });
+    }
+
+    private void exitActivity() {
+        Toast.makeText(this, "Успешно подесување на изворите.", Toast.LENGTH_SHORT).show();
+        this.finish();
     }
 
     // we should change it with a snickerbar

@@ -37,6 +37,7 @@
                             android:textColor="@color/white"
                             android:text="Следно"
                             android:layout_marginLeft="10dp"
+                            android:visibility="gone"
                             />
 
                         <ImageView

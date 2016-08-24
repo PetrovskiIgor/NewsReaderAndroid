@@ -20,14 +20,18 @@ public class GlobalInfo {
     public static String SERVER_IP = "http://mojpersonalizirancitac.appspot.com/";
 
 
+
     public static String PERSONALIZATION_STR = "isPersonalized";
     public static final String APP_HAS_BEEN_OPEN = "notFirstTime";
+    public static final String CALL_FROM_MAIN_ACTIVITY = "callFromMainActivity";
 
     public static String CAT_SPECIFICATION_PREF="categoriesSpecification";
     public static final String SOURCES_SPECIFICATION_PREF = "sourcesSpecification";
 
     public static final String SELECTED_SOURCES = "wantedSources";
     public static final String SELECTED_CATEGORIES = "wantedCategories";
+
+    public static final int HOW_MUCH_TOP_NEWS = 30;
 
     public static Random rg = new Random();
 

@@ -31,6 +31,8 @@ public class GlobalInfo {
     public static final String SELECTED_SOURCES = "wantedSources";
     public static final String SELECTED_CATEGORIES = "wantedCategories";
 
+    public static final String UNSELECTED_CATEGORIES = "unwantedCategories";
+
     public static final int HOW_MUCH_TOP_NEWS = 30;
 
     public static Random rg = new Random();

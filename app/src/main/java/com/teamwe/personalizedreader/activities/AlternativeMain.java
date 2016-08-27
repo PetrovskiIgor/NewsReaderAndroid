@@ -342,7 +342,7 @@ public class AlternativeMain extends AppCompatActivity
             listViewNews.setVisibility(View.GONE);
 
             Log.i(TAG, "No internet connection.");
-            Toast.makeText(this, " NO INTERNET CONNECTION! ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -374,7 +374,7 @@ public class AlternativeMain extends AppCompatActivity
         List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
 
 
-        GetNewsTask task = new GetNewsTask(new OnNewsHere() {
+        GetNewsTask task = new GetNewsTask(this,new OnNewsHere() {
             @Override
             public void onTaskCompleted(List<Cluster> list) {
                 adapter = new ClusterAdapter(act, list);

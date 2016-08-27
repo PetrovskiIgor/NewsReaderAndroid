@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -130,7 +131,16 @@ public class CategoriesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // set checked
+                /*
+                Category cat = adapter.getData().get(position);
+                cat.setCheckedState(!cat.getCheckedState());
+                CheckBox cb = (CheckBox)view.findViewById(R.id.cbCategory);
+                cb.setChecked(cat.getCheckedState());
+
+                // for just in case
+                adapter.getData().get(position).setCheckedState(cat.getCheckedState());
+                */
+
             }
         });
     }
@@ -167,11 +177,14 @@ public class CategoriesActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
 
             List<Category> selectedCategories = new ArrayList<Category>();
+            List<Category> unselectedCategories = new ArrayList<Category>();
 
 
             for (Category cat : categories) {
                 if (cat.getCheckedState()) {
                     selectedCategories.add(cat);
+                } else {
+                    unselectedCategories.add(cat);
                 }
             }
 
@@ -185,6 +198,9 @@ public class CategoriesActivity extends AppCompatActivity {
             String gsonFormatList = gson.toJson(selectedCategories, typeToken);
 
             editor.putString(GlobalInfo.SELECTED_CATEGORIES, gsonFormatList);
+
+            gsonFormatList = gson.toJson(unselectedCategories, typeToken);
+            editor.putString(GlobalInfo.UNSELECTED_CATEGORIES, gsonFormatList);
 
             editor.commit();
         }

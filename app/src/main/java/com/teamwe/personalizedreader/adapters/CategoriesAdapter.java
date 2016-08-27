@@ -83,6 +83,7 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
         final int pos = inNavigationDrawer?(position-1):position;
         if(inNavigationDrawer && position == 0) {
             txtCategory.setText(context.getResources().getString(R.string.trending_news));
+            Picasso.with(context).load(R.drawable.trending_moj_vesnik).into(imgCategory);
         } else {
 
             Category currCat = data.get(pos);

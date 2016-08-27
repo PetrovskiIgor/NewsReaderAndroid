@@ -1,10 +1,14 @@
 package com.teamwe.personalizedreader.tasks;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.ClusterWrapper;
@@ -17,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -27,12 +32,13 @@ import java.util.Set;
 public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
     private static final String TAG = "GetNews";
     private final List<Source> selectedSources;
-    OnNewsHere listener;
+    private OnNewsHere listener;
+    private Activity activity;
 
-
-    public GetNewsTask(OnNewsHere listener, List<Source> selectedSources) {
+    public GetNewsTask(Activity activity,OnNewsHere listener, List<Source> selectedSources) {
         this.listener = listener;
         this.selectedSources = selectedSources;
+        this.activity = activity;
     }
     @Override
     public List<Cluster> doInBackground(Category ... params) {
@@ -58,6 +64,20 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
             // if we have picked a specific category (not top news)
             if(category.getId() >= 0) {
                 query += String.format("&category_id=%d", category.getId());
+            } else {
+                StringBuilder sbUnwantedCategories = new StringBuilder();
+
+                List<Category> unwantedCategories = this.getUnwantedCategories();
+                if(unwantedCategories != null) {
+                    for (Category cat : unwantedCategories) {
+                        sbUnwantedCategories.append(cat.getId() + ",");
+                    }
+
+                    if(sbUnwantedCategories.length() > 0) {
+                        String strFinal = sbUnwantedCategories.toString().substring(0, sbUnwantedCategories.length() - 1);
+                        query += String.format("&unwanted_categories=%s", strFinal);
+                    }
+                }
             }
 
 
@@ -107,6 +127,18 @@ public class GetNewsTask extends AsyncTask<Category, Void, List<Cluster>>{
 
 
         return clusters;
+    }
+
+
+    private List<Category> getUnwantedCategories() {
+
+        SharedPreferences preferences = activity.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
+        String gsonList = preferences.getString(GlobalInfo.UNSELECTED_CATEGORIES, "");
+        Gson gson = new Gson();
+        Type typeToken = new TypeToken<List<Category>>() {}.getType();
+        List<Category> unselectedCategories = gson.fromJson(gsonList, typeToken);
+
+        return unselectedCategories;
     }
 
     @Override

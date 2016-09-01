@@ -33,7 +33,7 @@ public class GlobalInfo {
 
     public static final String UNSELECTED_CATEGORIES = "unwantedCategories";
 
-    public static final int HOW_MUCH_TOP_NEWS = 30;
+    public static final int HOW_MUCH_TOP_NEWS = 23;
 
     public static Random rg = new Random();
 

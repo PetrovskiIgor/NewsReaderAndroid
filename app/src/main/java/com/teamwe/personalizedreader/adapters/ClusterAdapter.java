@@ -98,13 +98,6 @@ public class ClusterAdapter extends BaseAdapter {
 
             NewsPost firstNews = cluster.listNews.get(0);
 
-            if(position < 5) {
-               // WebView webView  = new WebView(activity);
-                //webView.loadUrl(firstNews.url);
-                Log.i("CLUSTER ADAPTER","url preloading: " + firstNews.url);
-
-            }
-
             String title = firstNews.title;
             String imgUrl = "";
 

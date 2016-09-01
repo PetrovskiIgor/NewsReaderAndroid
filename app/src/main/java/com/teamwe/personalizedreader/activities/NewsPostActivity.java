@@ -1,14 +1,14 @@
 package com.teamwe.personalizedreader.activities;
 
-import android.app.Activity;
+
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,16 +25,18 @@ public class NewsPostActivity extends AppCompatActivity {
     private String url;
     private String title;
 
-    boolean loadingFinished = true;
-    boolean redirect = false;
+
     WebView webview;
     ProgressBar progressBar;
 
-    private SwipeRefreshLayout swipeView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_post);
+
+
+
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -51,14 +53,43 @@ public class NewsPostActivity extends AppCompatActivity {
         Intent intent = getIntent();
         url = intent.getStringExtra(GlobalInfo.NEWS_URL);
         title = intent.getStringExtra(GlobalInfo.NEWS_TITLE);
-        setTitle(title);
+
+        String shortTitle = title;
+        if(shortTitle.length() > 19) {
+            shortTitle= shortTitle.substring(0, 19) + "...";
+        }
+        setTitle(shortTitle);
         webview = (WebView)findViewById(R.id.webView);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setProgress(0);
 
         configureWebView();
+        configureShareButton();
     }
+
+
+    private void configureShareButton() {
+        /*
+       // btnShare = (FloatingActionButton)findViewById(R.id.btnShare);
+        //btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShareClicked();
+            }
+        });*/
+    }
+
+    private void onShareClicked() {
+        Intent i=new Intent(android.content.Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
+        i.putExtra(android.content.Intent.EXTRA_TEXT, url);
+        startActivity(Intent.createChooser(i, "Share via"));
+
+    }
+
+
 
 
     @Override
@@ -71,6 +102,11 @@ public class NewsPostActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
             this.finish();
+            return true;
+        } else if(id == R.id.menu_item_share) {
+            //Toast.makeText(this,"should be ok", Toast.LENGTH_SHORT).show();
+            onShareClicked();
+
             return true;
         }
 
@@ -98,6 +134,27 @@ public class NewsPostActivity extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.setWebViewClient(new WebViewClient());
         webview.loadUrl(url);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        webview.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        webview.onPause();
     }
 
 }

@@ -84,6 +84,7 @@ public class AlternativeMain extends AppCompatActivity
 
     private static final int REQUEST_CODE_CATEGORIES = 5;
     private static final int REQUEST_CODE_SOURCES=7;
+    private static final int REQUEST_CODE_NOTIFICATIONS=9;
 
 
     @Override
@@ -446,11 +447,21 @@ public class AlternativeMain extends AppCompatActivity
         this.startActivityForResult(intent, REQUEST_CODE_CATEGORIES);
     }
 
+    private void configureNotifications() {
+        Intent intent = new Intent(this, NotificationsActivity.class);
+        this.startActivityForResult(intent, REQUEST_CODE_NOTIFICATIONS);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE_CATEGORIES || requestCode == REQUEST_CODE_SOURCES) {
             // refresh the navigation view
             populateNavigationView();
+
+
+            if(currentCategory != null) {
+                loadNews();
+            }
         }
 
     }

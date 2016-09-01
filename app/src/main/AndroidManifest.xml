@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.teamwe.personalizedreader.activities.CategoriesActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,9 +30,7 @@
         <activity
             android:name="com.teamwe.personalizedreader.activities.AlternativeMain"
             android:label="@string/title_activity_alternative_main"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name="com.teamwe.personalizedreader.activities.NewsPostActivity" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -42,12 +40,19 @@
         <activity
             android:name="com.teamwe.personalizedreader.activities.SimilarNewsActivity"
             android:label="@string/title_activity_similar_news"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.teamwe.personalizedreader.activities.NotificationsActivity"
+            android:label="@string/title_activity_notifications"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@
     <color name="item_selected">#EEEEEE</color>
     <color name="nav_headers">#388E3C</color>
     <color name="background_nav_headers">#9943A047</color>
+    <color name="pink">#E91E63</color>
 
 
 </resources>

@@ -21,13 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-
-        <include layout="@layout/content_no_internet"
-            android:id="@+id/layout_no_internet"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:visibility="gone"/>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
 

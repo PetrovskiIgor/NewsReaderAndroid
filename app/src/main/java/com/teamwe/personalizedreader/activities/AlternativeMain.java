@@ -23,17 +23,12 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
 import com.commonsware.cwac.merge.MergeAdapter;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.teamwe.personalizedreader.adapters.AdjustmentAdapter;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.adapters.NewsPostsAdapter;
@@ -59,7 +54,6 @@ public class AlternativeMain extends AppCompatActivity
     // the list where we load the news into
     private ListView listViewNews;
 
-    private RelativeLayout layoutNoInternet;
 
     // the news of the current category that is shown to the user
     private Category currentCategory;
@@ -84,7 +78,7 @@ public class AlternativeMain extends AppCompatActivity
 
     private static final int REQUEST_CODE_CATEGORIES = 5;
     private static final int REQUEST_CODE_SOURCES=7;
-    private static final int REQUEST_CODE_NOTIFICATIONS=9;
+
 
 
     @Override
@@ -96,7 +90,6 @@ public class AlternativeMain extends AppCompatActivity
 
 
         listViewNews = (ListView) findViewById(R.id.listNews);
-        layoutNoInternet = (RelativeLayout) findViewById(R.id.layout_no_internet);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -227,7 +220,7 @@ public class AlternativeMain extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 NewsPost toLoad = null;
-                if(adapter != null) {
+                if (adapter != null) {
                     Cluster currentCluster = adapter.getCluster(position);
                     toLoad = currentCluster.listNews.get(0);
 
@@ -339,20 +332,15 @@ public class AlternativeMain extends AppCompatActivity
         // We need to check the internet connection
         if (null == info || !info.isConnected()) {
 
-            layoutNoInternet.setVisibility(View.VISIBLE);
-            listViewNews.setVisibility(View.GONE);
-
             Log.i(TAG, "No internet connection.");
             Toast.makeText(this, getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+            swipeView.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeView.setRefreshing(false);
+                }
+            });
             return;
-        }
-
-        if (layoutNoInternet.getVisibility() == View.VISIBLE) {
-            layoutNoInternet.setVisibility(View.GONE);
-        }
-
-        if (listViewNews.getVisibility() == View.GONE) {
-            listViewNews.setVisibility(View.VISIBLE);
         }
 
         swipeView.post(new Runnable() {
@@ -445,11 +433,6 @@ public class AlternativeMain extends AppCompatActivity
         Intent intent = new Intent(this, CategoriesActivity.class);
         intent.putExtra(GlobalInfo.CALL_FROM_MAIN_ACTIVITY, true);
         this.startActivityForResult(intent, REQUEST_CODE_CATEGORIES);
-    }
-
-    private void configureNotifications() {
-        Intent intent = new Intent(this, NotificationsActivity.class);
-        this.startActivityForResult(intent, REQUEST_CODE_NOTIFICATIONS);
     }
 
     @Override

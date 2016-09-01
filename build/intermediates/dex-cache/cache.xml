@@ -1,2 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.android.support-recyclerview-v7-23.1.1_2b6a55aec2ea4c09a371282d8b5811339a70b9d7.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.commonsware.cwac/merge/1.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9ce0bc7820833726763258cf29ca83924b7b1c8d">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.commonsware.cwac-merge-1.1.1_9686d6d8647825e9dd3b1bcbc83eb054530566f1.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/support-annotations-23.4.0_b00adf7d970ee92c8495e3c38a8e5d3b9e1fe454.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.android.support-appcompat-v7-23.1.1_fa35ba3b5391fc3eef5132a044e98584fa03f699.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="820605b42a2d3d9cb9e6c4cc7453fb4f802aedff">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.facebook.android-facebook-android-sdk-4.15.0_aecebabc1fa5947a8b9a49f76598f97175ff5b37.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.google.android.gms-play-services-basement-8.1.0_84739a79f31f01274256c00aee62faf1af5fcf5b.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/picasso-2.5.2_870d70640e4e729ec98dfe15297ceebe8a8ea892.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.android.support-support-v4-23.4.0_b333f90ebf3c1bd72c3df82fc84ce9b82314659c.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.4/695b63d702f505b9b916e02272e3b6381bade7f/gson-2.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0695b63d702f505b9b916e02272e3b6381bade7f">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/gson-2.4_28f41e64711fa5d2d0b6700ddf8b92a6ccadac77.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.android.support-cardview-v7-23.4.0_b2a1bdb355b8bbca6e98f3852884c345646bb97e.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/internal_impl-23.4.0_a5eeef7dec31a0e28dbfcc77183aa0d9791e9893.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.google.android.gms-play-services-appindexing-8.1.0_bb63c7ec3359822b68b7e609ec4b9ea0db154f1e.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/bolts-tasks-1.4.0_2e97c6324860319afe68ddc534133f429f793c93.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.commonsware.cwac/sacklist/1.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e2a9a01b65a179a0160ecf9c425ff34832f7b3ee">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.commonsware.cwac-sacklist-1.0.2_087fa0a7b4740263342f213cbd27c39072f6870a.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.android.support-design-23.1.1_8506133a9808ab9bafadf58922344be5190e519e.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/8ad21bf21784dacce5f2043afb97218cc377e835/bolts-applinks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/bolts-applinks-1.4.0_4c2920356766ce01996072331536eb24a05841ce.jar" />
+    </item>
+    <item
+        jar="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/exploded-aar/com.android.support/customtabs/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2d1eaa9e0b98f8fc4c2b989d9b30d4f1480648ac">
+        <dex dex="/Users/igorpetrovski/Desktop/NewsReaderClient/app/build/intermediates/pre-dexed/release/com.android.support-customtabs-23.4.0_e3d9b79d29bb97839becf183faa3fcbcd2150174.jar" />
+    </item>
+
+</items>

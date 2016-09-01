@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
@@ -34,6 +35,9 @@ import com.teamwe.personalizedreader.tasks.OnCategoriesHere;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+
+import com.facebook.FacebookSdk;
 
 
 // !!! WARNING !!!
@@ -60,6 +64,18 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        try {
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            AppEventsLogger.activateApp(this);
+        }catch(Exception e){
+
+        }
+
+
+
+
         setContentView(R.layout.activity_categories);
 
 

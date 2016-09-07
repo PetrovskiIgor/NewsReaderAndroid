@@ -6,16 +6,6 @@
     android:background="@color/sysWhite"
     >
 
-    <ImageView
-        android:id="@+id/imgSource"
-        android:src="@drawable/feed_icon"
-        android:layout_width="@dimen/img_category_width"
-        android:layout_height="@dimen/img_category_width"
-        android:layout_margin="10dp"
-        android:layout_centerVertical="true"
-        android:scaleType="fitCenter"
-       />
-
     <TextView
         android:id="@+id/txtSource"
         android:layout_width="wrap_content"
@@ -29,16 +19,23 @@
         android:layout_toRightOf="@+id/imgSource"/>
 
 
+    <ImageView
+        android:id="@+id/imgSource"
+        android:src="@drawable/feed_icon"
+        android:layout_width="@dimen/img_category_width"
+        android:layout_height="@dimen/img_category_width"
+        android:scaleType="fitCenter"
+        android:layout_alignTop="@+id/cbSource"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <CheckBox
         android:id="@+id/cbSource"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_item_medium"
-        android:layout_marginTop="@dimen/margin_item_large"
-        android:layout_marginBottom="@dimen/margin_item_large"
         android:layout_alignParentRight="true"
-        />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

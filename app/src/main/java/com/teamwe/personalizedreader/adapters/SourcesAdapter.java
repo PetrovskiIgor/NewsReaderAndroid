@@ -14,23 +14,19 @@ import com.squareup.picasso.Picasso;
 import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.mynews.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class SourcesAdapter extends ArrayAdapter<Source> {
 
+    private LayoutInflater layoutInflater;
     private List<Source> data;
     private Context context;
 
     private boolean inNavigationDrawer;
 
     public SourcesAdapter(Context context, int resource, List<Source> data) {
-        super(context, resource);
-        this.context = context;
-        this.data = data;
-
-        this.inNavigationDrawer = false;
+        this(context, resource, data, false);
     }
 
     public SourcesAdapter(Context context, int resource, List<Source> data, boolean inNavigationDrawer) {
@@ -38,11 +34,12 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
         this.context = context;
         this.data = data;
         this.inNavigationDrawer = inNavigationDrawer;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        if(null == data) return 0;
+        if (null == data) return 0;
 
 
         return data.size();
@@ -55,50 +52,65 @@ public class SourcesAdapter extends ArrayAdapter<Source> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.view_source, viewGroup, false);
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.listitem_image_text_checkbox, viewGroup, false);
+            convertView.setTag(new ViewHolder(convertView));
+        }
+        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+        viewHolder.clearListeners();
+        viewHolder.setPositionToCheckbox(position);
 
         Source currSource = data.get(position);
-
-        TextView txtSource = (TextView)convertView.findViewById(R.id.txtSource);
-        CheckBox cbSource = (CheckBox)convertView.findViewById(R.id.cbSource);
-
-        ImageView imgCategory = (ImageView)convertView.findViewById(R.id.imgSource);
-
-        if(currSource.getImgUrl() != null && currSource.getImgUrl().length() > 0)
-            Picasso.with(context).load(currSource.getImgUrl()).into(imgCategory);
+        if (currSource.getImgUrl() != null && currSource.getImgUrl().length() > 0)
+            Picasso.with(context).load(currSource.getImgUrl()).into(viewHolder.imageView);
         // maybe we need to load the static image again in an else statement
 
+        viewHolder.textView.setText(currSource.getName());
 
-
-
-        txtSource.setText(currSource.getName());
-
-
-        if(!inNavigationDrawer) {
-            if (currSource.isChecked()) {
-                cbSource.setChecked(true);
-            } else {
-                cbSource.setChecked(false);
-            }
-
-
-            cbSource.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    data.get(position).setIsChecked(isChecked);
-                }
-            });
+        if (!inNavigationDrawer) {
+            viewHolder.checkBox.setChecked(currSource.isChecked());
+            viewHolder.checkBox.setVisibility(View.VISIBLE);
+            viewHolder.checkBox.setOnCheckedChangeListener(checkBoxListener);
         } else {
-            cbSource.setVisibility(View.GONE);
+            viewHolder.checkBox.setVisibility(View.GONE);
         }
-
-
         return convertView;
     }
 
+    private CompoundButton.OnCheckedChangeListener checkBoxListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean ic) {
+            int pos = (int) buttonView.getTag();
+            data.get(pos).setIsChecked(ic);
+        }
+    };
 
     public List<Source> getSources() {
         return data;
+    }
+
+    public static class ViewHolder {
+        private final TextView textView;
+        private final CheckBox checkBox;
+        private final ImageView imageView;
+
+        private ViewHolder(View view) {
+            textView = (TextView) view.findViewById(R.id.textView);
+            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+            imageView = (ImageView) view.findViewById(R.id.imageView);
+        }
+
+        private void clearListeners() {
+            checkBox.setOnCheckedChangeListener(null);
+        }
+
+        private void setPositionToCheckbox(int position) {
+            checkBox.setTag(position);
+        }
+
+        public CheckBox getCheckBox() {
+            return checkBox;
+        }
     }
 
 }

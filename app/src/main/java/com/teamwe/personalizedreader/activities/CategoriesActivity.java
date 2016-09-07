@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,28 +16,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.model.Category;
-import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.CategoriesTask;
 import com.teamwe.personalizedreader.tasks.OnCategoriesHere;
 
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import com.facebook.FacebookSdk;
 
 
 // !!! WARNING !!!
@@ -72,10 +68,6 @@ public class CategoriesActivity extends AppCompatActivity {
         }catch(Exception e){
 
         }
-
-
-
-
         setContentView(R.layout.activity_categories);
 
 
@@ -103,8 +95,6 @@ public class CategoriesActivity extends AppCompatActivity {
         configureListView();
         configureSwipeView();
         configureLayoutNext();
-
-
         loadCategories();
 
 
@@ -141,22 +131,11 @@ public class CategoriesActivity extends AppCompatActivity {
     }
     private void configureListView() {
         listViewCategories = (ListView) findViewById(R.id.listCategories);
-
-
         this.listViewCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                /*
-                Category cat = adapter.getData().get(position);
-                cat.setCheckedState(!cat.getCheckedState());
-                CheckBox cb = (CheckBox)view.findViewById(R.id.cbCategory);
-                cb.setChecked(cat.getCheckedState());
-
-                // for just in case
-                adapter.getData().get(position).setCheckedState(cat.getCheckedState());
-                */
-
+                CategoriesAdapter.ViewHolder viewHolder = (CategoriesAdapter.ViewHolder) view.getTag();
+                viewHolder.getCheckBox().setChecked(!viewHolder.getCheckBox().isChecked());
             }
         });
     }
@@ -338,28 +317,21 @@ public class CategoriesActivity extends AppCompatActivity {
                 if (!callFromMainActivity) {
                     s.setCheckedState(true);
                 } else {
-
                     boolean isSelected = false;
-
                     for(Category selected : selectedCategories) {
                         if (selected.getId() == s.getId()) {
                             isSelected = true;
                             break;
                         }
                     }
-
                     s.setCheckedState(isSelected);
                 }
             }
-
         } else {
             for(Category c : data) {
                 c.setCheckedState(true);
             }
         }
-
-
-
         adapter = new CategoriesAdapter(this, 0, data);
         listViewCategories.setAdapter(adapter);
 

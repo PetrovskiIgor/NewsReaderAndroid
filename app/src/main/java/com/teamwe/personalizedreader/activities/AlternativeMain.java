@@ -7,15 +7,14 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,10 +24,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.adapters.CategoriesAdapter;
 import com.teamwe.personalizedreader.adapters.ClusterAdapter;
 import com.teamwe.personalizedreader.adapters.NewsPostsAdapter;
@@ -36,7 +35,6 @@ import com.teamwe.personalizedreader.adapters.SourcesAdapter;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
-import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.model.Source;
 import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.GetNewsFromSourceTask;
@@ -77,8 +75,7 @@ public class AlternativeMain extends AppCompatActivity
     private ListView listViewNV;
 
     private static final int REQUEST_CODE_CATEGORIES = 5;
-    private static final int REQUEST_CODE_SOURCES=7;
-
+    private static final int REQUEST_CODE_SOURCES = 7;
 
 
     @Override
@@ -90,7 +87,6 @@ public class AlternativeMain extends AppCompatActivity
 
 
         listViewNews = (ListView) findViewById(R.id.listNews);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -116,7 +112,7 @@ public class AlternativeMain extends AppCompatActivity
 
     private void populateNavigationView() {
 
-        listViewNV = (ListView)findViewById(R.id.listViewNV);
+        listViewNV = (ListView) findViewById(R.id.listViewNV);
         listViewNV.setDivider(null);
 
 
@@ -124,7 +120,8 @@ public class AlternativeMain extends AppCompatActivity
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.CAT_SPECIFICATION_PREF, Context.MODE_PRIVATE);
         String gsonList = preferences.getString(GlobalInfo.SELECTED_CATEGORIES, "");
         Gson gson = new Gson();
-        Type typeToken = new TypeToken<List<Category>>() {}.getType();
+        Type typeToken = new TypeToken<List<Category>>() {
+        }.getType();
         List<Category> selectedCategories = gson.fromJson(gsonList, typeToken);
 
         final CategoriesAdapter adapterCategories = new CategoriesAdapter(this, 0, selectedCategories, true);
@@ -135,7 +132,8 @@ public class AlternativeMain extends AppCompatActivity
 
         gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
         gson = new Gson();
-        typeToken = new TypeToken<List<Source>>() {}.getType();
+        typeToken = new TypeToken<List<Source>>() {
+        }.getType();
         List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
 
         final SourcesAdapter sourcesAdapter = new SourcesAdapter(this, 0, selectedSources, true);
@@ -149,11 +147,9 @@ public class AlternativeMain extends AppCompatActivity
         mergeAdapter.addAdapter(adapterCategories);
 
         // sources
-        View headerSources = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_sources,null);
+        View headerSources = LayoutInflater.from(this).inflate(R.layout.header_navigation_drawer_sources, null);
         mergeAdapter.addView(headerSources);
         mergeAdapter.addAdapter(sourcesAdapter);
-
-
 
 
         listViewNV.setAdapter(mergeAdapter);
@@ -171,10 +167,10 @@ public class AlternativeMain extends AppCompatActivity
 
                     int relativePosition = position - 1;
                     Category cat = null;
-                    if(relativePosition == 0) {
+                    if (relativePosition == 0) {
                         cat = new Category(-1, "Trending", getResources().getString(R.string.trending_news));
                     } else {
-                        cat = adapterCategories.getData().get(relativePosition-1);
+                        cat = adapterCategories.getData().get(relativePosition - 1);
                     }
 
                     currentCategory = cat;
@@ -186,7 +182,7 @@ public class AlternativeMain extends AppCompatActivity
 
                     loadNews();
                     //Toast.makeText(act, cat.getTitle(), Toast.LENGTH_SHORT).show();
-                }  else {
+                } else {
                     int relativePosition = position - sz_1 - 1;
 
                     Source source = sourcesAdapter.getData().get(relativePosition);
@@ -207,27 +203,20 @@ public class AlternativeMain extends AppCompatActivity
         });
 
 
-
-
-
     }
 
 
     private void configureListView() {
-
-        this.listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 NewsPost toLoad = null;
                 if (adapter != null) {
                     Cluster currentCluster = adapter.getCluster(position);
                     toLoad = currentCluster.listNews.get(0);
-
                 } else {
                     toLoad = adapterNewsFromSource.getNewsPost(position);
                 }
-
                 loadWebView(toLoad);
             }
         });
@@ -296,8 +285,7 @@ public class AlternativeMain extends AppCompatActivity
         final Activity act = this;
 
 
-
-        GetNewsFromSourceTask task = new GetNewsFromSourceTask(new OnNewsFromSourceHere(){
+        GetNewsFromSourceTask task = new GetNewsFromSourceTask(new OnNewsFromSourceHere() {
             @Override
             public void onTaskCompleted(List<NewsPost> list) {
 
@@ -355,15 +343,16 @@ public class AlternativeMain extends AppCompatActivity
 
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
-        String gsonList =  preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        String gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
         Gson gson = new Gson();
 
-        Type typeToken = new TypeToken<List<Source>>() {}.getType();
+        Type typeToken = new TypeToken<List<Source>>() {
+        }.getType();
 
         List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
 
 
-        GetNewsTask task = new GetNewsTask(this,new OnNewsHere() {
+        GetNewsTask task = new GetNewsTask(this, new OnNewsHere() {
             @Override
             public void onTaskCompleted(List<Cluster> list) {
                 adapter = new ClusterAdapter(act, list);
@@ -414,7 +403,7 @@ public class AlternativeMain extends AppCompatActivity
         if (id == R.id.categories_settings) {
             configureMyCategories();
             return true;
-        } else if(id == R.id.sources_settings) {
+        } else if (id == R.id.sources_settings) {
             configureMySources();
             return true;
         }
@@ -437,12 +426,12 @@ public class AlternativeMain extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE_CATEGORIES || requestCode == REQUEST_CODE_SOURCES) {
+        if (requestCode == REQUEST_CODE_CATEGORIES || requestCode == REQUEST_CODE_SOURCES) {
             // refresh the navigation view
             populateNavigationView();
 
 
-            if(currentCategory != null) {
+            if (currentCategory != null) {
                 loadNews();
             }
         }

@@ -1,10 +1,9 @@
 package com.teamwe.personalizedreader.adapters;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,14 +12,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.teamwe.personalizedreader.GlobalInfo;
-import com.teamwe.personalizedreader.activities.SimilarNewsActivity;
-import com.teamwe.personalizedreader.model.Cluster;
 import com.teamwe.personalizedreader.model.NewsPost;
 import com.teamwe.personalizedreader.mynews.R;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 
 public class NewsPostsAdapter extends BaseAdapter {
@@ -29,7 +24,7 @@ public class NewsPostsAdapter extends BaseAdapter {
     private Activity activity;
     private List<NewsPost> newsPosts;
 
-    public NewsPostsAdapter(Activity activity, List<NewsPost> clusters){
+    public NewsPostsAdapter(Activity activity, List<NewsPost> clusters) {
         super();
         this.activity = activity;
         this.newsPosts = clusters;
@@ -43,14 +38,14 @@ public class NewsPostsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (newsPosts!=null)
+        if (newsPosts != null)
             return newsPosts.size();
         return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        if (position<getCount())
+        if (position < getCount())
             return newsPosts.get(position);
         return null;
     }
@@ -62,33 +57,22 @@ public class NewsPostsAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        if (position >= getCount())
+            return null;
 
         final ViewHolder holder;
-
-        if (convertView ==null){
-
-            convertView = activity.getLayoutInflater().inflate(R.layout.row_cluster,parent,false);
-            holder = new ViewHolder();
-            holder.textViewTitle = (TextView) convertView.findViewById(R.id.textViewTitle);
-            holder.textViewNumPosts = (TextView) convertView.findViewById(R.id.textViewNumPosts);
-            holder.txtSourceUrl = (TextView)convertView.findViewById(R.id.textViewSourceUrl);
-            holder.imgViewPhoto = (ImageView) convertView.findViewById(R.id.imgCluster);
-            holder.txtPubDate = (TextView)convertView.findViewById(R.id.txtPubDate);
-            holder.txtDescription = (TextView)convertView.findViewById(R.id.txtDescription);
-
+        if (convertView == null) {
+            convertView = activity.getLayoutInflater().inflate(R.layout.row_cluster, parent, false);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-        else{
-            holder = (ViewHolder)convertView.getTag();
-        }
-
-        if (position>=getCount())
-            return null;
 
         final NewsPost newsPost = this.newsPosts.get(position);
 
-        if (newsPost!=null){
-            holder.position=position;
+        if (newsPost != null) {
+            holder.position = position;
             String title = newsPost.getTitle();
             String imgUrl = newsPost.getImg_url();
             String sourceUrl = newsPost.source_url;
@@ -97,10 +81,10 @@ public class NewsPostsAdapter extends BaseAdapter {
 
             holder.txtPubDate.setText(GlobalInfo.configureDate(pubDate));
 
-            if(null == description)
+            if (null == description)
                 description = "";
             description = description.trim();
-            if(description.length() > 80) {
+            if (description.length() > 80) {
                 description = description.substring(0, 80);
             }
             description += "...";
@@ -108,24 +92,24 @@ public class NewsPostsAdapter extends BaseAdapter {
 
 
             String bStr = "http://";
-            if(sourceUrl.startsWith(bStr)) {
+            if (sourceUrl.startsWith(bStr)) {
                 sourceUrl = sourceUrl.substring(bStr.length());
             }
 
             bStr = "www.";
-            if(sourceUrl.startsWith(bStr)) {
+            if (sourceUrl.startsWith(bStr)) {
                 sourceUrl = sourceUrl.substring(bStr.length());
             }
 
-            if(sourceUrl.endsWith("/")) {
-                sourceUrl = sourceUrl.substring(0, sourceUrl.length()-1);
+            if (sourceUrl.endsWith("/")) {
+                sourceUrl = sourceUrl.substring(0, sourceUrl.length() - 1);
             }
             holder.txtSourceUrl.setText(sourceUrl);
 
             holder.textViewTitle.setText(title);
             holder.textViewNumPosts.setVisibility(View.GONE);
-            if (null != imgUrl && imgUrl.length()!=0 && imgUrl.startsWith("http")) {
-                Picasso.with(activity).load(imgUrl).into(holder.imgViewPhoto,new com.squareup.picasso.Callback() {
+            if (!TextUtils.isEmpty(imgUrl) && imgUrl.startsWith("http")) {
+                Picasso.with(activity).load(imgUrl).into(holder.imgViewPhoto, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -136,8 +120,7 @@ public class NewsPostsAdapter extends BaseAdapter {
                         //putRandomPhotoTo(holder.imgViewPhoto);
                     }
                 });
-            }
-            else{
+            } else {
                 //putRandomPhotoTo(holder.imgViewPhoto);
             }
         }
@@ -160,16 +143,14 @@ public class NewsPostsAdapter extends BaseAdapter {
     }*/
 
 
-
-
-    private final void startIntent(NewsPost post){
+    private final void startIntent(NewsPost post) {
         String url = post.getUrl();
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         activity.startActivity(intent);
     }
 
-    class ViewHolder{
+    private static class ViewHolder {
         TextView textViewTitle;
         TextView textViewNumPosts;
         TextView txtSourceUrl;
@@ -177,5 +158,14 @@ public class NewsPostsAdapter extends BaseAdapter {
         ImageView imgViewPhoto;
         TextView txtPubDate;
         int position;
+
+        private ViewHolder(View view) {
+            textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
+            textViewNumPosts = (TextView) view.findViewById(R.id.textViewNumPosts);
+            txtSourceUrl = (TextView) view.findViewById(R.id.textViewSourceUrl);
+            imgViewPhoto = (ImageView) view.findViewById(R.id.imgCluster);
+            txtPubDate = (TextView) view.findViewById(R.id.txtPubDate);
+            txtDescription = (TextView) view.findViewById(R.id.txtDescription);
+        }
     }
 }

@@ -1,31 +1,29 @@
 package com.teamwe.personalizedreader.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-
-import com.commonsware.cwac.merge.MergeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.adapters.SourcesAdapter;
 import com.teamwe.personalizedreader.model.Source;
-import com.teamwe.personalizedreader.GlobalInfo;
 import com.teamwe.personalizedreader.mynews.R;
 import com.teamwe.personalizedreader.tasks.OnSourcesHere;
 import com.teamwe.personalizedreader.tasks.SourcesTask;
@@ -48,7 +46,6 @@ public class SourcesActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
 
-
     // the layout, when clicked, brings us to the main activity
     private RelativeLayout layoutNext;
     private boolean isPersonalized;
@@ -66,7 +63,7 @@ public class SourcesActivity extends AppCompatActivity {
         isPersonalized = sharedPreferences.getBoolean(GlobalInfo.PERSONALIZATION_STR, false);
 
 
-        if(!callFromMainActivity && isPersonalized) {
+        if (!callFromMainActivity && isPersonalized) {
             moveToNextActivity();
             this.finish();
         }
@@ -74,7 +71,7 @@ public class SourcesActivity extends AppCompatActivity {
         // color the notification bar with a color slightly darker than the primary color
         colorAboveTheToolbar();
 
-        toolbar = (Toolbar)findViewById(R.id.toolbarSources);
+        toolbar = (Toolbar) findViewById(R.id.toolbarSources);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(getResources().getString(R.string.title_sources_activity));
@@ -90,9 +87,18 @@ public class SourcesActivity extends AppCompatActivity {
     }
 
     private void configureListView() {
-        listViewSources = (ListView)findViewById(R.id.listSources);
+        listViewSources = (ListView) findViewById(R.id.listSources);
+        listViewSources.setOnItemClickListener(onItemClickListener);
         listViewSources.setDivider(null);
     }
+
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            SourcesAdapter.ViewHolder viewHolder = (SourcesAdapter.ViewHolder) view.getTag();
+            viewHolder.getCheckBox().setChecked(!viewHolder.getCheckBox().isChecked());
+        }
+    };
 
     private void configureSwipeView() {
 
@@ -137,6 +143,8 @@ public class SourcesActivity extends AppCompatActivity {
         Log.i(TAG, func_tag + "exit");
     }
 
+
+
     private void configureLayoutNext() {
 
         layoutNext = (RelativeLayout) toolbar.findViewById(R.id.layoutNext);
@@ -151,7 +159,7 @@ public class SourcesActivity extends AppCompatActivity {
                 if (countSelectedSources() >= 1) {
                     putSelectedSourcesInSharedPreferences();
 
-                    if(callFromMainActivity) {
+                    if (callFromMainActivity) {
                         exitActivity();
                     } else {
                         moveToNextActivity();
@@ -172,6 +180,7 @@ public class SourcesActivity extends AppCompatActivity {
     private void showToastForBadSpecification() {
         Toast.makeText(this, getResources().getString(R.string.warning_at_least_one_source), Toast.LENGTH_LONG).show();
     }
+
     private void showToastForGoingTooEarly() {
         Toast.makeText(this, getResources().getString(R.string.going_too_early_sources), Toast.LENGTH_SHORT).show();
     }
@@ -183,7 +192,7 @@ public class SourcesActivity extends AppCompatActivity {
     private void putSelectedSourcesInSharedPreferences() {
 
         String func_tag = "putSelectedSourcesInSharedPreferences(): ";
-        if (adapter != null){
+        if (adapter != null) {
 
             List<Source> sources = adapter.getSources();
             SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
@@ -198,12 +207,13 @@ public class SourcesActivity extends AppCompatActivity {
                 }
             }
 
-            for(Source wantedSource : selectedSources) {
-                Log.i(TAG, String.format("%s%s: true",func_tag,wantedSource.toString()));
+            for (Source wantedSource : selectedSources) {
+                Log.i(TAG, String.format("%s%s: true", func_tag, wantedSource.toString()));
             }
 
             Gson gson = new Gson();
-            Type typeToken = new TypeToken<List<Source>>() {}.getType();
+            Type typeToken = new TypeToken<List<Source>>() {
+            }.getType();
 
             String gsonFormatList = gson.toJson(selectedSources, typeToken);
 
@@ -226,10 +236,10 @@ public class SourcesActivity extends AppCompatActivity {
         return toRet;
     }
 
-    private void loadSources(){
+    private void loadSources() {
         final String func_tag = "loadSources(): ";
 
-        Log.i(TAG, func_tag +"Posting the animation for loading..");
+        Log.i(TAG, func_tag + "Posting the animation for loading..");
 
         swipeView.post(new Runnable() {
             @Override
@@ -243,7 +253,7 @@ public class SourcesActivity extends AppCompatActivity {
             @Override
             public void onTaskCompleted(List<Source> data) {
 
-                Log.i(TAG, func_tag +  "The task has been completed. Showing the data in the listview..");
+                Log.i(TAG, func_tag + "The task has been completed. Showing the data in the listview..");
                 showSources(data);
             }
         });
@@ -274,20 +284,21 @@ public class SourcesActivity extends AppCompatActivity {
             Log.i(TAG, func_tag + "Strangely, the swipe view is not refreshing.");
         }
 
-        if(null == data) {
+        if (null == data) {
             Toast.makeText(this, "Обидете се повторно.", Toast.LENGTH_LONG).show();
             return;
         }
 
         SharedPreferences preferences = this.getSharedPreferences(GlobalInfo.SOURCES_SPECIFICATION_PREF, Context.MODE_PRIVATE);
 
-        String gsonList =  preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
+        String gsonList = preferences.getString(GlobalInfo.SELECTED_SOURCES, "");
 
         if (gsonList.length() > 0) {
 
             Gson gson = new Gson();
 
-            Type typeToken = new TypeToken<List<Source>>() {}.getType();
+            Type typeToken = new TypeToken<List<Source>>() {
+            }.getType();
 
             List<Source> selectedSources = gson.fromJson(gsonList, typeToken);
 
@@ -298,7 +309,7 @@ public class SourcesActivity extends AppCompatActivity {
 
                     boolean isSelected = false;
 
-                    for(Source selected : selectedSources) {
+                    for (Source selected : selectedSources) {
                         if (selected.getId() == s.getId()) {
                             isSelected = true;
                             break;
@@ -309,15 +320,12 @@ public class SourcesActivity extends AppCompatActivity {
                 }
             }
         } else {
-            for(Source s : data) {
+            for (Source s : data) {
                 s.setIsChecked(true);
             }
         }
-
         adapter = new SourcesAdapter(this, 0, data);
         listViewSources.setAdapter(adapter);
-
-
     }
 
 
@@ -335,7 +343,7 @@ public class SourcesActivity extends AppCompatActivity {
 
     private void colorAboveTheToolbar() {
 
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

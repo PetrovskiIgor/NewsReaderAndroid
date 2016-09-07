@@ -9,6 +9,7 @@
     <color name="sysWhite">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#0091EA</color>
+    <color name="blue_t25">#250091EA</color>
     <color name="primaryColor">#4DD0E1</color>
     <color name="primaryColorDark">#00B8D4</color>
     <color name="rss_color">#f26522</color>

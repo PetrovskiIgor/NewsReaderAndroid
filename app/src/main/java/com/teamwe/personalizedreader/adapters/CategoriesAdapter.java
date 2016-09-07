@@ -1,7 +1,6 @@
 package com.teamwe.personalizedreader.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,33 +14,28 @@ import com.squareup.picasso.Picasso;
 import com.teamwe.personalizedreader.model.Category;
 import com.teamwe.personalizedreader.mynews.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class CategoriesAdapter extends ArrayAdapter<Category> {
 
     public static String TAG = "CategoriesAdapter";
+    private LayoutInflater layoutInflater;
+    private List<Category> data;
+    private Context context;
 
-    List<Category> data;
-    Context context;
-
-    boolean inNavigationDrawer;
+    private boolean inNavigationDrawer;
 
     public CategoriesAdapter(Context context, int resource, List<Category> data) {
-        super(context, resource);
-
-        this.data = data;
-        this.context = context;
-        this.inNavigationDrawer = false;
+        this(context, resource, data, false);
     }
 
     public CategoriesAdapter(Context context, int resource, List<Category> data, boolean inNavigationDrawer) {
         super(context, resource);
-
         this.data = data;
         this.context = context;
         this.inNavigationDrawer = inNavigationDrawer;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
 
@@ -61,9 +55,9 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
 
     @Override
     public int getCount() {
-        if(null == data) return 0;
+        if (null == data) return 0;
 
-        if(inNavigationDrawer) {
+        if (inNavigationDrawer) {
             return 1 + data.size(); // Најнови
         }
         return data.size();
@@ -71,47 +65,64 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.listitem_image_text_checkbox, viewGroup, false);
+            convertView.setTag(new ViewHolder(convertView));
+        }
+        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+        viewHolder.clearListeners();
 
-        Log.i(TAG, "position: " + position);
-        convertView = LayoutInflater.from(context).inflate(R.layout.view_category, viewGroup, false);
-        Log.i(TAG, "convertView: " + convertView);
-
-        TextView txtCategory = (TextView) convertView.findViewById(R.id.txtCategory);
-        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.cbCategory);
-        ImageView imgCategory = (ImageView) convertView.findViewById(R.id.imgCategory);
-
-        final int pos = inNavigationDrawer?(position-1):position;
-        if(inNavigationDrawer && position == 0) {
-            txtCategory.setText(context.getResources().getString(R.string.trending_news));
-            Picasso.with(context).load(R.drawable.trending_moj_vesnik).into(imgCategory);
+        final int pos = inNavigationDrawer ? (position - 1) : position;
+        viewHolder.setPositionToCheckbox(pos);
+        if (inNavigationDrawer && position == 0) {
+            viewHolder.txtCategory.setText(context.getResources().getString(R.string.trending_news));
+            Picasso.with(context).load(R.drawable.trending_moj_vesnik).into(viewHolder.imgCategory);
         } else {
-
             Category currCat = data.get(pos);
-            if (currCat.getImgUrl() != null && currCat.getImgUrl().length() > 0)
-                Picasso.with(context).load(currCat.getImgUrl()).into(imgCategory);
-
-            txtCategory.setText(data.get(pos).getTitle());
-
-
+            if (currCat.getImgUrl() != null && currCat.getImgUrl().length() > 0) {
+                Picasso.with(context).load(currCat.getImgUrl()).into(viewHolder.imgCategory);
+            }
+            viewHolder.txtCategory.setText(data.get(pos).getTitle());
         }
-
         if (!inNavigationDrawer) {
-
-            checkBox.setChecked(data.get(pos).getCheckedState());
-
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean ic) {
-                    data.get(pos).setCheckedState(ic);
-                }
-            });
+            viewHolder.checkBox.setChecked(data.get(pos).getCheckedState());
+            viewHolder.checkBox.setOnCheckedChangeListener(checkBoxListener);
         } else {
-            checkBox.setVisibility(View.GONE);
+            viewHolder.checkBox.setVisibility(View.GONE);
         }
-
         return convertView;
     }
 
+    private CompoundButton.OnCheckedChangeListener checkBoxListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean ic) {
+            int pos = (int) buttonView.getTag();
+            data.get(pos).setCheckedState(ic);
+        }
+    };
 
+    public static class ViewHolder {
+        private final TextView txtCategory;
+        private final CheckBox checkBox;
+        private final ImageView imgCategory;
+
+        private ViewHolder(View view) {
+            txtCategory = (TextView) view.findViewById(R.id.textView);
+            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+            imgCategory = (ImageView) view.findViewById(R.id.imageView);
+        }
+
+        private void clearListeners(){
+            checkBox.setOnCheckedChangeListener(null);
+        }
+
+        private void setPositionToCheckbox(int position) {
+            checkBox.setTag(position);
+        }
+
+        public CheckBox getCheckBox() {
+            return checkBox;
+        }
+    }
 
 }
